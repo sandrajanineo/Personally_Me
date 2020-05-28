@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Login from '../components/Login';
+// import Login from '../components/Login';
 // import Signup from '../components/SignUp';
 
 export default function HomeScreen ({ navigation }) {
-  const [logged_in, setLoggedIn] = React.useState(true);
+  // const [logged_in, setLoggedIn] = React.useState(false);
   
   return (
     <View style={styles.container}>
@@ -14,7 +14,7 @@ export default function HomeScreen ({ navigation }) {
         contentContainerStyle={styles.contentContainer}
       >
         <Text style={styles.welcomeText}>Welcome to PersonallyMe!</Text>
-        {logged_in ?
+        {/* {logged_in ? */}
           <View style={styles.welcomeContainer}>
             <Image
               source={{
@@ -34,11 +34,11 @@ export default function HomeScreen ({ navigation }) {
               <Text style={styles.buttonText}>Dress Me!</Text>
             </TouchableOpacity>
           </View>
-          :
+          {/* : */}
           <View>
             <Login />
           </View>
-        }
+        {/* } */}
       </ScrollView>
     </View>
   );

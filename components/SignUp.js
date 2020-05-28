@@ -1,33 +1,36 @@
 import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 
-export default function Login ({ navigation }) {
+export default function Signup ({ navigation }) {
+  const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   return (
     <View style={styles.container}>
-      <TextInput
-          style={styles.inputBox}
-          value={email}
-          onChangeText={email => setEmail(email)}
-          placeholder='Email'
-          autoCapitalize='none'
-      />
-      <TextInput
-          style={styles.inputBox}
-          value={password}
-          onChangeText={password => setPassword(password)}
-          placeholder='Password'
-          secureTextEntry={true}
-      />
-      <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <Button
-          onPress={() => navigation.navigate('SignUp')}
-          title="Don't have an account yet? Sign up" 
-      />
+        <TextInput
+            style={styles.inputBox}
+            value={name}
+            onChangeText={name => setName(name)}
+            placeholder='Full Name'
+        />
+        <TextInput
+            style={styles.inputBox}
+            value={email}
+            onChangeText={email => setEmail(email)}
+            placeholder='Email'
+            autoCapitalize='none'
+        />
+        <TextInput
+            style={styles.inputBox}
+            value={password}
+            onChangeText={password => setPassword(password)}
+            placeholder='Password'
+            secureTextEntry={true}
+        />
+        <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Signup</Text>
+        </TouchableOpacity>
     </View>
   );
 }
