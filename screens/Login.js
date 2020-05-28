@@ -1,35 +1,43 @@
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
 
-export default function Login ({ navigation }) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+export default class Login extends React.Component {
+  constructor(props){
+    super();
+    this.state = {
+      logged_in: false,
+      email: '',
+      password: ''
+    }
+  }
 
-  return (
-    <View style={styles.container}>
-      <TextInput
-          style={styles.inputBox}
-          value={email}
-          onChangeText={email => setEmail(email)}
-          placeholder='Email'
-          autoCapitalize='none'
-      />
-      <TextInput
-          style={styles.inputBox}
-          value={password}
-          onChangeText={password => setPassword(password)}
-          placeholder='Password'
-          secureTextEntry={true}
-      />
-      <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <Button
-          onPress={() => navigation.navigate('SignUp')}
-          title="Don't have an account yet? Sign up" 
-      />
-    </View>
-  );
+  render() {
+    return (
+      <View style={styles.container}>
+        <TextInput
+            style={styles.inputBox}
+            value={this.state.email}
+            onChangeText={email => this.setState({ email })}
+            placeholder='Email'
+            autoCapitalize='none'
+        />
+        <TextInput
+            style={styles.inputBox}
+            value={this.state.password}
+            onChangeText={password => this.setState({ password })}
+            placeholder='Password'
+            secureTextEntry={true}
+        />
+        <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <Button 
+            title="Don't have an account yet? Sign up"
+            onPress={() => this.props.navigation.navigate('SignUp')}
+        />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

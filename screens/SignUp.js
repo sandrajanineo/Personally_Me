@@ -1,38 +1,59 @@
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 
-export default function Signup ({ navigation }) {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+import Firebase from '../dbConfig';
 
-  return (
-    <View style={styles.container}>
-        <TextInput
-            style={styles.inputBox}
-            value={name}
-            onChangeText={name => setName(name)}
-            placeholder='Full Name'
-        />
-        <TextInput
-            style={styles.inputBox}
-            value={email}
-            onChangeText={email => setEmail(email)}
-            placeholder='Email'
-            autoCapitalize='none'
-        />
-        <TextInput
-            style={styles.inputBox}
-            value={password}
-            onChangeText={password => setPassword(password)}
-            placeholder='Password'
-            secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Signup</Text>
-        </TouchableOpacity>
-    </View>
-  );
+export default class Signup extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+        name: '',
+        email: '',
+        password: ''
+    }
+    this.handleSignUp = this.handleSignUp.bind(this);
+  }
+  
+  handleSignUp = () => {
+    const { email, password } = this.state
+    Firebase.auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => this.props.navigation.navigate('App', { logged_in: true } ))
+      .catch(error => console.log(error))
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+          <TextInput
+              style={styles.inputBox}
+              value={this.state.name}
+              onChangeText={name => this.setState({ name })}
+              placeholder='Full Name'
+          />
+          <TextInput
+              style={styles.inputBox}
+              value={this.state.email}
+              onChangeText={email => this.setState({ email })}
+              placeholder='Email'
+              autoCapitalize='none'
+          />
+          <TextInput
+              style={styles.inputBox}
+              value={this.state.password}
+              onChangeText={password => this.setState({ password })}
+              placeholder='Password'
+              secureTextEntry={true}
+          />
+          <TouchableOpacity 
+              style={styles.button}
+              onPress={this.handleSignUp}
+          >
+          <Text style={styles.buttonText}>Signup</Text>
+          </TouchableOpacity>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

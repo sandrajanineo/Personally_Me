@@ -15,7 +15,7 @@ export default function BottomTabNavigator({ navigation, route }) {
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
-        name="Home"
+        name="HomeStack"
         component={HomeStack}
         options={{
           title: 'Get Started',
