@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 
 import Firebase from '../dbConfig';
-import {AuthContext} from '../App';
+import { AuthContext } from '../hooks/auth';
 
 export default function Signup () {
   const [name, setName] = React.useState('');

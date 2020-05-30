@@ -1,5 +1,7 @@
 import * as React from 'react';  
 
+export const AuthContext = React.createContext();
+
 export default function auth (){
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
