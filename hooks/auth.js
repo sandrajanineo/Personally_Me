@@ -1,4 +1,5 @@
-import * as React from 'react';  
+import * as React from 'react';
+import Firebase from '../dbConfig';
 
 export const AuthContext = React.createContext();
 
@@ -11,6 +12,7 @@ export default function auth (){
             ...prevState,
             isSignout: false,
             logged_in: true,
+            user: action.user
           };
         case 'SIGN_OUT':
           return {
@@ -22,13 +24,17 @@ export default function auth (){
     },
     {
       logged_in: false,
-      isSignout: false
+      isSignout: false,
+      user: {}
     }
   );
   
   const authContext = React.useMemo(
     () => ({
-      signIn: () => dispatch({ type: 'SIGN_IN' }),
+      signIn: () => {
+        let user = Firebase.auth().currentUser;
+        dispatch({ type: 'SIGN_IN', user })
+      },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
     }),
     []
