@@ -1,43 +1,50 @@
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
 
-export default class Login extends React.Component {
-  constructor(props){
-    super();
-    this.state = {
-      logged_in: false,
-      email: '',
-      password: ''
-    }
-  }
+import Firebase from '../dbConfig';
+import {AuthContext} from '../App';
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <TextInput
-            style={styles.inputBox}
-            value={this.state.email}
-            onChangeText={email => this.setState({ email })}
-            placeholder='Email'
-            autoCapitalize='none'
-        />
-        <TextInput
-            style={styles.inputBox}
-            value={this.state.password}
-            onChangeText={password => this.setState({ password })}
-            placeholder='Password'
-            secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <Button 
-            title="Don't have an account yet? Sign up"
-            onPress={() => this.props.navigation.navigate('SignUp')}
-        />
-      </View>
-    );
-  }
+export default function Login ( {navigation} ) {
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const { signIn } = React.useContext(AuthContext);
+
+  return (
+    <View style={styles.container}>
+      <TextInput
+          style={styles.inputBox}
+          value={email}
+          onChangeText={email => setEmail( email )}
+          placeholder='Email'
+          autoCapitalize='none'
+      />
+      <TextInput
+          style={styles.inputBox}
+          value={password}
+          onChangeText={password => setPassword( password )}
+          placeholder='Password'
+          secureTextEntry={true}
+      />
+      <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleLogin( email, password )
+            .then( () => signIn() )
+            .catch( (error) => console.log(error) )
+          }
+      >
+          <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+      <Button 
+          title="Don't have an account yet? Sign up"
+          onPress={() => navigation.navigation('SignUp') }
+      />
+    </View>
+  );
+}
+
+function handleLogin (email, password){
+  return Firebase.auth().signInWithEmailAndPassword(email, password);
 }
 
 const styles = StyleSheet.create({
