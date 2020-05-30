@@ -5,6 +5,7 @@ import TabBarIcon from '../components/TabBarIcon';
 
 import LinksScreen from '../screens/LinksScreen';
 import HomeStack from './HomeStack';
+import ProductsStack from './ProductsStack';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -23,10 +24,10 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="Links"
-        component={LinksScreen}
+        name="ProductsStack"
+        component={ProductsStack}
         options={{
-          title: 'Resources',
+          title: 'Your Closet',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
