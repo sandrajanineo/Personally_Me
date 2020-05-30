@@ -28,10 +28,7 @@ export default function Login ( {navigation} ) {
       />
       <TouchableOpacity
           style={styles.button}
-          onPress={() => handleLogin( email, password )
-            .then( () => signIn() )
-            .catch( (error) => console.log(error) )
-          }
+          onPress={ () => handleLogin( email, password, signIn ) }
       >
           <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
@@ -43,8 +40,11 @@ export default function Login ( {navigation} ) {
   );
 }
 
-function handleLogin (email, password){
-  return Firebase.auth().signInWithEmailAndPassword(email, password);
+function handleLogin (email, password, cB){
+  return Firebase.auth()
+    .signInWithEmailAndPassword(email, password)
+    .then( () => cB() )
+    .catch( (error) => console.log(error) )
 }
 
 const styles = StyleSheet.create({
