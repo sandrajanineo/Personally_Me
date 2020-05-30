@@ -2,14 +2,10 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-
-// import Firebase from './dbConfig';
-
 import useCachedResources from './hooks/useCachedResources';
 import auth from './hooks/auth';
 import { AuthContext } from './hooks/auth';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
-// import LinkingConfiguration from './navigation/LinkingConfiguration';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 
