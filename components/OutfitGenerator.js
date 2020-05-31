@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+import OutfitGeneratorForm from './OutfitGeneratorForm';
+import Firebase from '../dbConfig';
 
 import Outfit from './Outfit';
 
@@ -10,9 +10,9 @@ export default class OutfitGenerator extends React.Component {
   isMounted = false;
   constructor(props) {
     super();
-    this.refTops = firebase.firestore().collection('tops');
-    this.refBottoms = firebase.firestore().collection('bottoms');
-    this.refFullbody = firebase.firestore().collection('fullbody');
+    this.refTops = Firebase.firestore().collection('tops');
+    this.refBottoms = Firebase.firestore().collection('bottoms');
+    this.refFullbody = Firebase.firestore().collection('fullbody');
     this.unsubscribe = null;
     this.state = {
       tops: [],
@@ -28,6 +28,7 @@ export default class OutfitGenerator extends React.Component {
     this.getBottoms = this.getBottoms.bind(this);
     this.getFullbody = this.getFullbody.bind(this);
     this.generateOutfit = this.generateOutfit.bind(this);
+    this.updateState = this.updateState.bind(this);
   }
 
   getTops(querySnapShot) {
@@ -137,65 +138,24 @@ export default class OutfitGenerator extends React.Component {
       }
     }
   }
+  
+  updateState (key, value) {
+    this.setState({ [key]: value });
+  }
 
   render() {
-    // console.log('this.state is!! ', this.state);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.formContainer}>
-          <Picker
-            selectedValue={this.state.type}
-            style={styles.formOptions}
-            onValueChange={(itemValue, itemIndex) => {
-              this.setState({ type: itemValue });
-            }}
-          >
-            <Picker.Item label="Select the type of outfit:" value="" />
-            <Picker.Item label="One Piece" value="fullbody" />
-            <Picker.Item label="Two Piece" value="topNbottom" />
-          </Picker>
-
-          <Picker
-            selectedValue={this.state.occasion}
-            style={styles.formOptions}
-            onValueChange={(itemValue, itemIndex) => {
-              this.setState({ occasion: itemValue });
-            }}
-          >
-            <Picker.Item label="Select the type of occasion:" value="" />
-
-            <Picker.Item label="Business" value="business" />
-            <Picker.Item label="Casual" value="casual" />
-            <Picker.Item label="Formal" value="formal" />
-            <Picker.Item label="Night Out" value="nightOut" />
-            <Picker.Item label="Sporty" value="sporty" />
-          </Picker>
-
-          <Picker
-            selectedValue={this.state.season}
-            style={styles.formOptions}
-            onValueChange={(itemValue, itemIndex) => {
-              this.setState({ season: itemValue });
-            }}
-          >
-            <Picker.Item label="Select the season:" value="" />
-            <Picker.Item label="Winter" value="winter" />
-            <Picker.Item label="Spring" value="spring" />
-            <Picker.Item label="Summer" value="summer" />
-            <Picker.Item label="Fall" value="fall" />
-          </Picker>
-
-          <Text>{'\n'}</Text>
-
-          <TouchableOpacity style={styles.button} onPress={this.generateOutfit}>
-            <Text style={styles.buttonText}>Dress Me!</Text>
-          </TouchableOpacity>
-
-          {this.state.showImage ? (
-            <Outfit outfit={this.state.selected} />
-          ) : (
-            <Text style={styles.text}>Nothing Yet...</Text>
-          )}
+        { this.state.showImage ? (
+          <Outfit outfit={this.state.selected} />
+        ) : (
+          <OutfitGeneratorForm 
+              items={this.state}
+              updateState={this.updateState}
+              generateOutfit={this.generateOutfit}
+          />
+        )}
         </View>
       </ScrollView>
     );

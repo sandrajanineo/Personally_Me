@@ -3,35 +3,35 @@ import ItemList from '../components/ItemList';
 import Firebase from '../dbConfig';
 // import { useNavigation } from '@react-navigation/native';
 
-export default class Tops extends React.Component {
+export default class Collection extends React.Component {
   component_mounted = false;
-  constructor() {
-    super();
-    this.ref = Firebase.firestore().collection('tops');
+  constructor(props) {
+    super(props);
+    this.ref = Firebase.firestore().collection(props.route.params.collection);
     this.unsubscribe = null;
     this.state = {
       isLoading: true,
-      tops: [],
+      items: [],
     };
-    this.getTops = this.getTops.bind(this);
+    this.getItems = this.getItems.bind(this);
   }
 
-  getTops(querySnapShot) {
-    let tops = [];
+  getItems(querySnapShot) {
+    let items = [];
     querySnapShot.forEach(doc => {
-      tops.push(doc.data());
+      items.push(doc.data());
     });
     if (this.component_mounted) {
       this.setState({
         isLoading: false,
-        tops,
+        items,
       });
     }
   }
 
   componentDidMount() {
     this.component_mounted = true;
-    this.unsubscribe = this.ref.onSnapshot(this.getTops);
+    this.unsubscribe = this.ref.onSnapshot(this.getItems);
     this.unsubscribe = null;
   }
 
@@ -41,6 +41,6 @@ export default class Tops extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    return <ItemList items={this.state.tops} navigation={navigation} />;
+    return <ItemList items={this.state.items} navigation={navigation} />;
   }
 }
