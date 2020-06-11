@@ -42,3 +42,10 @@ export default function auth (){
   
   return [state, authContext];
 }
+
+// implicitly creates collection if dne and adds document to collection
+        // Firebase.firestore().collection(user.uid).add({
+        //   url: "test"
+        // })
+        // .then( () => console.log('collection created') )
+        // .catch( (err) => console.log(err) );

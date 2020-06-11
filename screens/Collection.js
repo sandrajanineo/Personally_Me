@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ItemList from '../components/ItemList';
 import Firebase from '../dbConfig';
-// import { useNavigation } from '@react-navigation/native';
 
 export default class Collection extends React.Component {
   component_mounted = false;

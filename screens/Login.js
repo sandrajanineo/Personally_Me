@@ -34,16 +34,16 @@ export default function Login ( {navigation} ) {
       </TouchableOpacity>
       <Button 
           title="Don't have an account yet? Sign up"
-          onPress={() => navigation.navigation('SignUp') }
+          onPress={() => navigation.navigate('SignUp') }
       />
     </View>
   );
 }
 
-function handleLogin (email, password, cB){
+function handleLogin (email, password, login){
   return Firebase.auth()
     .signInWithEmailAndPassword(email, password)
-    .then( () => cB() )
+    .then( () => login() )
     .catch( (error) => console.log(error) )
 }
 

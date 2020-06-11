@@ -42,10 +42,10 @@ export default function Signup () {
   )
 }
 
-function handleSignUp (email, password, cB) {
+function handleSignUp (email, password, signIn) {
   Firebase.auth()
     .createUserWithEmailAndPassword(email, password)
-    .then( () => cB() )
+    .then( () => signIn() )
     .catch(error => console.log(error))
 }
 

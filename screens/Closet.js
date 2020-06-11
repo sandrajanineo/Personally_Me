@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import auth from '../hooks/auth';
 
-export default function ClosetItems ( {navigation} ) {
+export default function Closet ( {navigation} ) {
   return (
     <View style={styles.container}>
       <ScrollView>
