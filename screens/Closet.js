@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import auth from '../hooks/auth';
+import { AuthContext } from '../hooks/auth';
 
 export default function Closet ( {navigation} ) {
+  const currentContext = React.useContext(AuthContext);
+
   return (
     <View style={styles.container}>
       <ScrollView>

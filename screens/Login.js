@@ -8,7 +8,9 @@ export default function Login ( {navigation} ) {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const { signIn } = React.useContext(AuthContext);
+  const { authContext } = React.useContext(AuthContext);
+  const signIn = authContext.signIn;
+  console.log('currentContext: ', signIn);
 
   return (
     <View style={styles.container}>
@@ -40,10 +42,10 @@ export default function Login ( {navigation} ) {
   );
 }
 
-function handleLogin (email, password, login){
+function handleLogin (email, password, signIn){
   return Firebase.auth()
     .signInWithEmailAndPassword(email, password)
-    .then( () => login() )
+    .then( () => signIn() )
     .catch( (error) => console.log(error) )
 }
 

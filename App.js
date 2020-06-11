@@ -22,7 +22,7 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer>
-          <AuthContext.Provider value={authContext}>
+          <AuthContext.Provider value={{state, authContext}}>
             <Stack.Navigator>
               {!state.logged_in ? (
                 <>
