@@ -32,9 +32,21 @@ export default function globalContext (){
 
   const globalDispatch = React.useMemo(
     () => ({
-      signIn: () => {
-        let user = Firebase.auth().currentUser;
-        dispatch({ type: 'SIGN_IN', user })
+      signIn: (email, password) => {
+        Firebase.auth().signInWithEmailAndPassword(email, password)
+        .then( () => {
+          let user = Firebase.auth().currentUser;
+          dispatch({ type: 'SIGN_IN', user })
+        })
+        .catch(error => console.log(error) )
+      },
+      signUp: (email, password) => {
+        Firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then( () => {
+          let user = Firebase.auth().currentUser;
+          dispatch({ type: 'SIGN_IN', user })
+        })
+        .catch(error => console.log(error))
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
     }),

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
 
-import Firebase from '../dbConfig';
 import { GlobalContext } from '../hooks/global';
 
 export default function Login ( {navigation} ) {
@@ -28,7 +27,7 @@ export default function Login ( {navigation} ) {
       />
       <TouchableOpacity
           style={styles.button}
-          onPress={ () => handleLogin( email, password, signIn ) }
+          onPress={ () => signIn(email, password) }
       >
           <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
@@ -38,13 +37,6 @@ export default function Login ( {navigation} ) {
       />
     </View>
   );
-}
-
-function handleLogin (email, password, signIn){
-  return Firebase.auth()
-    .signInWithEmailAndPassword(email, password)
-    .then( () => signIn() )
-    .catch( (error) => console.log(error) )
 }
 
 const styles = StyleSheet.create({

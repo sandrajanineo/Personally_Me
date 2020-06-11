@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 
-import Firebase from '../dbConfig';
 import { GlobalContext } from '../hooks/global';
 
 export default function Signup () {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const { signIn } = React.useContext(GlobalContext);
+  const { signUp } = React.useContext(GlobalContext);
 
   return (
     <View style={styles.container}>
@@ -34,19 +33,12 @@ export default function Signup () {
         />
         <TouchableOpacity 
             style={styles.button}
-            onPress={ () => handleSignUp(email, password, signIn) }
+            onPress={ () => signUp(email, password) }
         >
         <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
     </View>
   )
-}
-
-function handleSignUp (email, password, signIn) {
-  Firebase.auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then( () => signIn() )
-    .catch(error => console.log(error))
 }
 
 const styles = StyleSheet.create({
