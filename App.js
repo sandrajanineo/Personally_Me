@@ -23,7 +23,11 @@ export default function App(props) {
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer>
           <GlobalContext.Provider value={ {...state, ...globalDispatch} }>
-            <Stack.Navigator>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false
+              }}
+            >
               {!state.logged_in ? (
                 <>
                 <Stack.Screen name="Login" component={Login} />
