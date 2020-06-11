@@ -3,42 +3,47 @@ import Firebase from '../dbConfig';
 
 export const GlobalContext = React.createContext();
 
-export default function contextGlobal (){
+export default function globalContext (){
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
-        case 'FETCH_USER':
+        case 'SIGN_IN':
           return {
             ...prevState,
+            isSignout: false,
+            logged_in: true,
             userID: action.user.uid
           };
-        // case 'FETCH_COLLECTIONS':
-        //   return {
-        //     ...prevState,
-        //     isSignout: true,
-        //     logged_in: false,
-        //   };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            logged_in: false,
+          };
       }
     },
     {
-      user: {},
+      logged_in: false,
+      isSignout: false,
+      userID: '',
       closet: {}
     }
   );
-  
+
   const globalDispatch = React.useMemo(
     () => ({
-      fetchUser: () => {
+      signIn: () => {
         let user = Firebase.auth().currentUser;
-        dispatch({ type: 'FETCH_USER', user })
+        dispatch({ type: 'SIGN_IN', user })
       },
-      // fetchCollections: () => dispatch({ type: 'FETCH_COLLECTIONS' }),
+      signOut: () => dispatch({ type: 'SIGN_OUT' }),
     }),
     []
   );
-  
+
   return [state, globalDispatch];
 }
+
 
 // implicitly creates collection if dne and adds document to collection
         // Firebase.firestore().collection(user.uid).add({

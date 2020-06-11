@@ -2,13 +2,13 @@ import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 
 import Firebase from '../dbConfig';
-import { AuthContext } from '../hooks/auth';
+import { GlobalContext } from '../hooks/global';
 
 export default function Signup () {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const { signIn } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(GlobalContext);
 
   return (
     <View style={styles.container}>

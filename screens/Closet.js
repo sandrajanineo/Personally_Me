@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GlobalContext } from '../hooks/global';
 
 export default function Closet ( {navigation} ) {
-  const [state, globalDispatch] = React.useContext(GlobalContext);
+  const state = React.useContext(GlobalContext);
 
   return (
     <View style={styles.container}>

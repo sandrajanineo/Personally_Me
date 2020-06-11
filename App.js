@@ -3,8 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import useCachedResources from './hooks/useCachedResources';
-import auth from './hooks/auth';
-import { AuthContext } from './hooks/auth';
+import globalContext from './hooks/global';
+import { GlobalContext } from './hooks/global';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
-  const [authState, authContext] = auth();
+  const [state, globalDispatch] = globalContext();
 
   if (!isLoadingComplete) {
     return null;
@@ -22,9 +22,9 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer>
-          <AuthContext.Provider value={ authContext }>
+          <GlobalContext.Provider value={ {...state, ...globalDispatch} }>
             <Stack.Navigator>
-              {!authState.logged_in ? (
+              {!state.logged_in ? (
                 <>
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="SignUp" component={SignUp} />
@@ -33,7 +33,7 @@ export default function App(props) {
                 <Stack.Screen name="Root" component={BottomTabNavigator} />
               )}
             </Stack.Navigator>
-          </AuthContext.Provider>
+          </GlobalContext.Provider>
         </NavigationContainer>
       </View>
     );
