@@ -7,7 +7,7 @@ import Firebase from '../dbConfig';
 import Outfit from './Outfit';
 
 export default class OutfitGenerator extends React.Component {
-  isMounted = false;
+  _mounted = false;
   constructor(props) {
     super();
     this.refTops = Firebase.firestore().collection('tops');
@@ -36,7 +36,7 @@ export default class OutfitGenerator extends React.Component {
     querySnapShot.forEach(doc => {
       tops.push(doc.data());
     });
-    if (this.isMounted) {
+    if (this._mounted) {
       this.setState({ tops: tops });
     }
   }
@@ -46,7 +46,7 @@ export default class OutfitGenerator extends React.Component {
     querySnapShot.forEach(doc => {
       bottoms.push(doc.data());
     });
-    if (this.isMounted) {
+    if (this._mounted) {
       this.setState({ bottoms: bottoms });
     }
   }
@@ -56,20 +56,20 @@ export default class OutfitGenerator extends React.Component {
     querySnapShot.forEach(doc => {
       fullbody.push(doc.data());
     });
-    if (this.isMounted) {
+    if (this._mounted) {
       this.setState({ fullbody: fullbody });
     }
   }
 
   componentDidMount() {
-    this.isMounted = true;
+    this._mounted = true;
     this.refTops.onSnapshot(this.getTops);
     this.refBottoms.onSnapshot(this.getBottoms);
     this.refFullbody.onSnapshot(this.getFullbody);
   }
 
   componentWillUnmount() {
-    this.isMounted = false;
+    this._mounted = false;
   }
 
   generateOutfit() {
@@ -110,11 +110,10 @@ export default class OutfitGenerator extends React.Component {
       let randomTop = [];
       let randomBottom = [];
 
-      //generate random numbers based on lenght of the array
+      //generate random numbers based on length of the array
       if (selectedTops) {
         let randomTopNum = Math.floor(Math.random() * selectedTops.length);
         randomTop = selectedTops[randomTopNum];
-        console.log('random top is ', randomTop);
       } else {
         randomTop = null;
       }
@@ -124,7 +123,6 @@ export default class OutfitGenerator extends React.Component {
           Math.random() * selectedBottoms.length
         );
         randomBottom = selectedBottoms[randomBottomNum];
-        console.log('random bottom is ', randomBottom);
       } else {
         randomBottom = null;
       }
