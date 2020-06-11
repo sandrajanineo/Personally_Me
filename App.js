@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
-  const [state, authContext] = auth();
+  const [authState, authContext] = auth();
 
   if (!isLoadingComplete) {
     return null;
@@ -22,9 +22,9 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer>
-          <AuthContext.Provider value={{state, authContext}}>
+          <AuthContext.Provider value={ authContext }>
             <Stack.Navigator>
-              {!state.logged_in ? (
+              {!authState.logged_in ? (
                 <>
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="SignUp" component={SignUp} />

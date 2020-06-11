@@ -8,9 +8,7 @@ export default function Login ( {navigation} ) {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const { authContext } = React.useContext(AuthContext);
-  const signIn = authContext.signIn;
-  console.log('currentContext: ', signIn);
+  const { signIn } = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>

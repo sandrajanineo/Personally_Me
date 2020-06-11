@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { AuthContext } from '../hooks/auth';
+import { GlobalContext } from '../hooks/global';
 
 export default function Closet ( {navigation} ) {
-  const currentContext = React.useContext(AuthContext);
+  const [state, globalDispatch] = React.useContext(GlobalContext);
 
   return (
     <View style={styles.container}>
