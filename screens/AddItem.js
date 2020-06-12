@@ -11,8 +11,11 @@ import {
 } from 'react-native';
 
 import PickImage from '../components/PickImage';
+import { GlobalContext } from '../hooks/global';
 
 export default class AddItem extends React.Component {
+  static contextType = GlobalContext;
+
   constructor() {
     super();
     this.state = {
@@ -28,13 +31,8 @@ export default class AddItem extends React.Component {
 
   addItem() {
     console.log('state is now ', this.state);
-    console.log('button clicked!');
-    const db = firebase.firestore();
-    db.collection(`${this.state.category}`)
-      .add(this.state)
-      .then(function(docRef) {
-        console.log('successfully added item!');
-      });
+    const contxt = this.context
+    contxt.addItem(contxt.userID, this.state.category, this.state);
 
     this.setState({
       image: null,

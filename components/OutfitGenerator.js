@@ -1,19 +1,16 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
-import OutfitGeneratorForm from './OutfitGeneratorForm';
-import Firebase from '../dbConfig';
+import { StyleSheet, View } from 'react-native';
 
-import Outfit from './Outfit';
+import { GlobalContext } from '../hooks/global';
+import OutfitGeneratorForm from '../components/OutfitGeneratorForm';
+import Outfit from '../components/Outfit';
 
 export default class OutfitGenerator extends React.Component {
   _mounted = false;
+  static contextType = GlobalContext;
   constructor(props) {
     super();
-    this.refTops = Firebase.firestore().collection('tops');
-    this.refBottoms = Firebase.firestore().collection('bottoms');
-    this.refFullbody = Firebase.firestore().collection('fullbody');
-    this.unsubscribe = null;
     this.state = {
       tops: [],
       bottoms: [],
@@ -24,48 +21,30 @@ export default class OutfitGenerator extends React.Component {
       selected: [],
       showImage: false,
     };
-    this.getTops = this.getTops.bind(this);
-    this.getBottoms = this.getBottoms.bind(this);
-    this.getFullbody = this.getFullbody.bind(this);
+    this.getItems = this.getItems.bind(this);
     this.generateOutfit = this.generateOutfit.bind(this);
     this.updateState = this.updateState.bind(this);
   }
 
-  getTops(querySnapShot) {
-    let tops = [];
-    querySnapShot.forEach(doc => {
-      tops.push(doc.data());
-    });
-    if (this._mounted) {
-      this.setState({ tops: tops });
+  async getItems() {
+    const {fetchCollection, userID, closet} = this.context;
+    console.log(this.context);
+    if (this.state.type === 'fullbody' && this._mounted){
+      await fetchCollection(userID, this.state.type);
+      console.log('closet fullbody: ', closet);
+      this.setState({ fullbody: closet.fullbody })
+    } else {
+      await fetchCollection(userID, 'tops');
+      await fetchCollection(userID, 'bottoms');
+      console.log('closet', closet)
+      // this.setState({ tops: closet.tops });
+      // this.setState({ bottoms: closet.bottoms });
     }
-  }
-
-  getBottoms(querySnapShot) {
-    let bottoms = [];
-    querySnapShot.forEach(doc => {
-      bottoms.push(doc.data());
-    });
-    if (this._mounted) {
-      this.setState({ bottoms: bottoms });
-    }
-  }
-
-  getFullbody(querySnapShot) {
-    let fullbody = [];
-    querySnapShot.forEach(doc => {
-      fullbody.push(doc.data());
-    });
-    if (this._mounted) {
-      this.setState({ fullbody: fullbody });
-    }
+    this.generateOutfit();
   }
 
   componentDidMount() {
     this._mounted = true;
-    this.refTops.onSnapshot(this.getTops);
-    this.refBottoms.onSnapshot(this.getBottoms);
-    this.refFullbody.onSnapshot(this.getFullbody);
   }
 
   componentWillUnmount() {
@@ -89,7 +68,9 @@ export default class OutfitGenerator extends React.Component {
       this.setState({ selected: randomFullbody, showImage: true });
     } else {
       let tops = this.state.tops;
+      console.log('tops: ', tops);
       let bottoms = this.state.bottoms;
+      console.log('bottoms: ', bottoms);
       let selectedTops = tops.filter(item => {
         if (
           item.season === this.state.season &&
@@ -151,7 +132,7 @@ export default class OutfitGenerator extends React.Component {
           <OutfitGeneratorForm 
               items={this.state}
               updateState={this.updateState}
-              generateOutfit={this.generateOutfit}
+              getItems={this.getItems}
           />
         )}
         </View>

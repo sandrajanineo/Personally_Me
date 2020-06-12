@@ -48,7 +48,7 @@ export default function OutfitGeneratorForm (props) {
 
     <Text>{'\n'}</Text>
 
-    <TouchableOpacity style={styles.button} onPress={ () => props.generateOutfit() }>
+    <TouchableOpacity style={styles.button} onPress={ () => props.getItems() }>
       <Text style={styles.buttonText}>Dress Me!</Text>
     </TouchableOpacity>
     </>

@@ -6,9 +6,7 @@ export default function Collection ( props ) {
   const state = React.useContext(GlobalContext);
 
   React.useEffect(() => {
-    (async () => {
-      await state.fetchCollection(props.route.params.collection)
-    })();
+    return state.fetchCollection(state.userID, props.route.params.collection);
   }, []);
 
   return (
