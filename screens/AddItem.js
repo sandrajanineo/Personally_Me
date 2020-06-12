@@ -6,9 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Platform,
   Picker,
-  Button,
   Alert
 } from 'react-native';
 
