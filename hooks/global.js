@@ -20,13 +20,18 @@ export default function globalContext (){
             isSignout: true,
             logged_in: false,
           };
+        case 'FETCH_COLLECTION':
+          return {
+            ...prevState,
+            closet: action.items
+          }
       }
     },
     {
       logged_in: false,
       isSignout: false,
       userID: '',
-      closet: {}
+      closet: []
     }
   );
 
@@ -49,6 +54,17 @@ export default function globalContext (){
         .catch(error => console.log(error))
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      fetchCollection: (collection) => {
+        let items = [];
+        Firebase.firestore().collection(collection)
+          .onSnapshot( (querySnapshot) => {
+            querySnapshot.forEach(() => items.push( doc.data() ))
+          },
+          function (error){
+            console.log('error: ', error);
+          })
+          .then( () => dispatch({ type: 'FETCH_COLLECTION', items }));
+      }
     }),
     []
   );
