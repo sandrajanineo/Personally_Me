@@ -12,9 +12,7 @@ import {
   Alert
 } from 'react-native';
 
-// import * as ImagePicker from 'expo-image-picker';
-// import * as Permissions from 'expo-permissions';
-
+import PickImage from '../components/PickImage';
 
 export default class AddItem extends React.Component {
   constructor() {
@@ -27,6 +25,7 @@ export default class AddItem extends React.Component {
       category: '',
     };
     this.addItem = this.addItem.bind(this);
+    this.addImage = this.addImage.bind(this);
   }
 
   addItem() {
@@ -48,49 +47,11 @@ export default class AddItem extends React.Component {
     });
 
     Alert.alert('Item Added Successfully!');
-    // let category =
-    //   this.state.category[0].toUpperCase() + this.state.category.slice(1);
-    // console.log('category is ', category);
-    // // this.props.navigate(`${this.state.category}`);
   }
 
-  showAlert() {
-    Alert.alert(
-      'Please Allow Access',
-      [
-        'This applicaton needs access to your photo library to upload images.',
-        '\n\n',
-        'Please go to Settings of your device and grant permissions to Photos.',
-      ].join(''),
-      [
-        { text: 'Not Now', style: 'cancel' },
-        { text: 'Settings', onPress: () => Linking.openURL('app-settings:') },
-      ]
-    );
+  addImage(image){
+    this.setState( {image} );
   }
-
-  // pickImage = async () => {
-  //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-  //   if (status !== 'granted') {
-  //     if (Platform.OS === 'ios') this.showAlert();
-  //     return;
-  //   }
-
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     type: 'images',
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     base64: true,
-  //   });
-
-  //   console.log(result);
-
-  //   if (!result.cancelled) {
-  //     this.setState({ image: result.uri });
-  //   } else {
-  //     this.setState({ image: null });
-  //   }
-  // };
 
   render() {
     return (
@@ -98,10 +59,11 @@ export default class AddItem extends React.Component {
         <View style={styles.formContainer}>
           <Text style={styles.headerText}>Add To Your Collection!</Text>
 
-          <Button
-            title="Pick an image from camera roll"
-            // onPress={this.pickImage}
+          <PickImage 
+            image={this.state.image}
+            addImage={this.addImage}
           />
+
           {this.state.image && (
             <Image source={{ uri: this.state.image }} style={styles.image} />
           )}

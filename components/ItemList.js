@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, Button } from 'react-native';
 
 export default ItemList = props => {
   return (
     <View style={styles.container}>
       <ScrollView>
+        <Button
+          title="Add to your collection"
+          onPress={() => props.navigation.navigate('AddItem')}
+        />
         {props.items.map((item, i) => {
           return (
             <TouchableOpacity
