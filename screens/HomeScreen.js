@@ -24,7 +24,7 @@ export default function HomeScreen ({ navigation }) {
             <Text>{'\n'}</Text>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('OutfitGenerator')}
+              onPress={() => navigation.navigate('OutfitGeneratorForm')}
             >
             <Text style={styles.buttonText}>Dress Me!</Text>
             </TouchableOpacity>

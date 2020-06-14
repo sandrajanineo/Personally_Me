@@ -30,7 +30,6 @@ export default class AddItem extends React.Component {
   }
 
   addItem() {
-    console.log('state is now ', this.state);
     const contxt = this.context
     contxt.addItem(contxt.userID, this.state.category, this.state);
 

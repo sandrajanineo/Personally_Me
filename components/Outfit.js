@@ -1,32 +1,25 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Image, StyleSheet, Text, View, TextComponent } from 'react-native';
 
-export default function Outfit (props) {
-  let outfit = props.outfit;
-  {
-    outfit.length === 2 ? (
-      <View style={styles.welcomeContainer}>
-        <Text style={styles.developmentModeText}>WALAAAAAH!</Text>
-      </View>
-    ) : (
-      <Text />
-    );
-  }
+export default Outfit = (props) => {
   return (
     <View style={styles.container}>
-      {outfit.map((item, i) => {
-        return item ? (
-          <View style={styles.welcomeContainer} key={i}>
-            <Image source={{ uri: item.image }} style={styles.welcomeImage} />
-          </View>
+      <ScrollView>
+        { props.outfit.length ? 
+          ( props.outfit.map((item, i) => {
+            return <Image source={{ uri: item.image }} style={styles.image} key={i} />
+          })
         ) : (
-          <Text style={styles.text} key={i}>
-            WAAAHHHH :( only one item in your collection matched that
+          <View style={styles.container}>
+            <Text style={styles.text} >
+            WAAAHHHH :( no items in your collection match that
             criteria...add more items or browse your collection via the "Your
             Closet" tab!
-          </Text>
-        );
-      })}
+            </Text>
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 }
@@ -35,47 +28,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#48D1CC',
-    alignSelf: 'center',
+    paddingTop: 15,
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
+  image: {
     width: 300,
     height: 300,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
     alignSelf: 'center',
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  getStartedText: {
-    fontSize: 25,
-    color: 'white',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  button: {
-    fontSize: 25,
-    color: 'white',
-    lineHeight: 24,
-    textAlign: 'center',
-    borderColor: 'white',
+    borderWidth: 2,
+    borderColor: 'blue',
   },
   text: {
     fontSize: 15,
