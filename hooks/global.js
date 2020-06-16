@@ -75,7 +75,12 @@ export default function globalContext (){
             error => console.log('error: ', error)
           );
       },
-      addItem: ( userID, category, details ) => {
+      addItem: async ( userID, category, details ) => {
+        let date = new Date();
+        let imageName = "img" + Math.random().toString(36) + date.getHours().toString(36);
+        let imageURL = await createImageBLOB(details.image, imageName);
+        details.imageURL = imageURL;
+        details.image = imageName;
         Firebase.firestore()
         .collection(userID).doc(category).set({ category })
         .then( () => {
@@ -144,3 +149,24 @@ const outfitGenerator = (items, categories, season, occasion) => {
   return outfit;
 }
 
+const createImageBLOB = async (uri, name) => {
+    const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function(e) {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const storageRef = Firebase.storage().ref().child( name );
+  const snapshot = await storageRef.put(blob);
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
+}
