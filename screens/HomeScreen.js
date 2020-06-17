@@ -40,27 +40,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#48D1CC',
   },
   contentContainer: {
-    paddingTop: 30,
+    paddingTop: 10,
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    alignItems: 'center',
-    marginHorizontal: 50,
+    marginBottom: 25,
   },
   welcomeImage: {
     width: 350,
     height: 350,
     resizeMode: 'contain',
-    marginLeft: -10,
+    alignSelf: 'center'
   },
   welcomeText: {
     fontSize: 30,
     color: 'white',
     lineHeight: 35,
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: 15,
   },
   text: {
     fontSize: 25,

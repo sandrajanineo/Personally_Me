@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, TouchableOpacity, View, Image, Button } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, Text } from 'react-native';
 
 export default ItemList = props => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Button
-          title="Add to your collection"
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => props.navigation.navigate('AddItem')}
-        />
+        >
+          <Text style={styles.buttonText}>Add to your collection</Text>
+        </TouchableOpacity>
+        
         {props.items.map((item, i) => {
           return (
             <TouchableOpacity
@@ -17,7 +20,7 @@ export default ItemList = props => {
               onPress={() => props.navigation.navigate('ItemDetail', {item})}
             >
               <View style={styles.imageContainer}>
-                <Image source={{ uri: item.image }} style={styles.image} />
+                <Image source={{ uri: item.imageURL }} style={styles.image} />
               </View>
             </TouchableOpacity>
           );
@@ -44,12 +47,26 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 300,
-    height: 300,
+    height: 200,
     resizeMode: 'contain',
     marginTop: 3,
-    marginLeft: -10,
-    alignItems: 'center',
+    alignSelf: 'center',
     borderWidth: 2,
     borderColor: 'blue',
+  },
+  button: {
+    color: '#0000CD',
+    backgroundColor: 'white',
+    borderColor: 'white',
+    borderWidth: 10,
+    width: 300,
+    alignSelf: 'center',
+    marginBottom: 20,
+    marginTop: 5,
+  },
+  buttonText: {
+    fontSize: 20,
+    lineHeight: 20,
+    textAlign: 'center',
   },
 });

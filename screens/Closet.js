@@ -14,7 +14,7 @@ export default function Closet ( {navigation} ) {
           <Image
             source={{
               uri:
-                'https://images.express.com/is/image/expressfashion/0097_08634710_0046_f033?cache=on&wid=480&fmt=jpeg&qlt=85,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon',
+                'https://images.express.com/is/image/expressfashion/0387_80002212_3041_f001?cache=on&wid=480&fmt=jpeg&qlt=85,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon',
             }}
             style={styles.image}
           />
@@ -30,7 +30,7 @@ export default function Closet ( {navigation} ) {
           <Image
             source={{
               uri:
-                'https://images.express.com/is/image/expressfashion/0085_07167984_0025_f001?cache=on&wid=480&fmt=jpeg&qlt=85,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon',
+                'https://images.express.com/is/image/expressfashion/0093_08219562_0011_f001?cache=on&wid=480&fmt=jpeg&qlt=85,1&resmode=sharp2&op_usm=1,1,5,0&defaultImage=Photo-Coming-Soon',
             }}
             style={styles.image}
           />
