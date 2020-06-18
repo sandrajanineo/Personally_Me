@@ -77,7 +77,7 @@ export default function globalContext (){
       },
       addItem: async ( userID, category, details ) => {
         let date = new Date();
-        let imageName = "img" + Math.random().toString(36) + date.getHours().toString(36);
+        let imageName = "img" + Math.random().toString(36).slice(2) + date.getHours().toString(36);
         let imageURL = await createImageBLOB(details.image, imageName);
         details.imageURL = imageURL;
         details.image = imageName;
@@ -85,7 +85,7 @@ export default function globalContext (){
         .collection(userID).doc(category).set({ category })
         .then( () => {
           let docRef = Firebase.firestore().collection(userID).doc(category)
-          docRef.collection(category).add(details);
+          docRef.collection(category).doc(imageName).set(details);
         })
         .catch( error => console.log(error) );
       },
