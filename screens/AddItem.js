@@ -71,11 +71,11 @@ export default class AddItem extends React.Component {
             }}
           >
             <Picker.Item label="Select the occasion:" value="" />
-            <Picker.Item label="Business" value="business" />
-            <Picker.Item label="Casual" value="casual" />
-            <Picker.Item label="Formal" value="formal" />
-            <Picker.Item label="Night Out" value="nightOut" />
-            <Picker.Item label="Sporty" value="sporty" />
+            <Picker.Item label="Business" value="Business" />
+            <Picker.Item label="Casual" value="Casual" />
+            <Picker.Item label="Formal" value="Formal" />
+            <Picker.Item label="Night Out" value="Night Out" />
+            <Picker.Item label="Sporty" value="Sporty" />
           </Picker>
           <Picker
             selectedValue={this.state.color}
@@ -85,14 +85,14 @@ export default class AddItem extends React.Component {
             }}
           >
             <Picker.Item label="Select the color:" value="" />
-            <Picker.Item label="Red" value="red" />
+            <Picker.Item label="Red" value="Red" />
             <Picker.Item label="Blue" value="Blue" />
-            <Picker.Item label="Yellow" value="yellow" />
+            <Picker.Item label="Yellow" value="Yellow" />
             <Picker.Item label="White" value="White" />
-            <Picker.Item label="Violet" value="violet" />
-            <Picker.Item label="Pink" value="pink" />
-            <Picker.Item label="Orange" value="orange" />
-            <Picker.Item label="Black" value="black" />
+            <Picker.Item label="Violet" value="Violet" />
+            <Picker.Item label="Pink" value="Pink" />
+            <Picker.Item label="Orange" value="Orange" />
+            <Picker.Item label="Black" value="Black" />
             <Picker.Item label="Green" value="Green" />
           </Picker>
           <Picker
@@ -103,10 +103,10 @@ export default class AddItem extends React.Component {
             }}
           >
             <Picker.Item label="Select the season:" value="" />
-            <Picker.Item label="Winter" value="winter" />
-            <Picker.Item label="Spring" value="spring" />
-            <Picker.Item label="Summer" value="summer" />
-            <Picker.Item label="Fall" value="fall" />
+            <Picker.Item label="Winter" value="Winter" />
+            <Picker.Item label="Spring" value="Spring" />
+            <Picker.Item label="Summer" value="Summer" />
+            <Picker.Item label="Fall" value="Fall" />
           </Picker>
           <Picker
             selectedValue={this.state.category}

@@ -17,7 +17,7 @@ export default ItemList = props => {
           return (
             <TouchableOpacity
               key={i}
-              onPress={() => props.navigation.navigate('ItemDetail', {item})}
+              onPress={() => props.navigation.navigate('ItemDetail', { item })}
             >
               <View style={styles.imageContainer}>
                 <Image source={{ uri: item.imageURL }} style={styles.image} />
