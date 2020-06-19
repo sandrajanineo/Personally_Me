@@ -32,7 +32,7 @@ export default function PickImage ( props ) {
     });
 
     if (!result.cancelled) {
-      props.addImage(result.uri);
+      props.addImage( 'image', result.uri );
     }
   }
 

@@ -63,10 +63,10 @@ export default function globalContext (){
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       fetchCollection: ( userID, category ) => {
-        let items = [];
         Firebase.firestore()
           .collection(userID).doc(category).collection(category)
           .onSnapshot( querySnapshot => {
+            let items = [];
             querySnapshot.forEach( doc => {
               items.push( doc.data() )
             })
@@ -89,6 +89,16 @@ export default function globalContext (){
         })
         .catch( error => console.log(error) );
       },
+
+      updateItem: ( userID, docName, details ) => {
+        Firebase.firestore()
+        .collection( userID ).doc( details.category )
+        .collection( details.category ).doc( docName )
+        .update( details )
+        .then( () => console.log('update successful'))
+        .catch( error => console.log( error ) )
+      },
+
       generateOutfit: ( userID, categories, seasonSelected, occassionSelected ) => {
         let itemObj = {};
         categories.forEach( ( category, i ) => {

@@ -6,11 +6,11 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Picker,
   Alert
 } from 'react-native';
 
 import PickImage from '../components/PickImage';
+import Form from '../components/Form';
 import { GlobalContext } from '../hooks/global';
 
 export default class AddItem extends React.Component {
@@ -26,7 +26,7 @@ export default class AddItem extends React.Component {
       category: '',
     };
     this.addItem = this.addItem.bind(this);
-    this.addImage = this.addImage.bind(this);
+    this.updateState = this.updateState.bind(this);
   }
 
   addItem() {
@@ -44,8 +44,8 @@ export default class AddItem extends React.Component {
     Alert.alert('Item Added Successfully!');
   }
 
-  addImage(image){
-    this.setState( {image} );
+  updateState( key, val ){
+    this.setState({ [key]: val });
   }
 
   render() {
@@ -54,79 +54,18 @@ export default class AddItem extends React.Component {
         <View style={styles.formContainer}>
           <Text style={styles.headerText}>Add To Your Collection!</Text>
 
-          <PickImage 
-            image={this.state.image}
-            addImage={this.addImage}
-          />
+          <PickImage image={this.state.image} addImage={this.updateState} />
 
           {this.state.image && (
             <Image source={{ uri: this.state.image }} style={styles.image} />
           )}
 
-          <Picker
-            selectedValue={this.state.occassion}
-            style={styles.formOptions}
-            onValueChange={(itemValue, itemIndex) => {
-              this.setState({ occassion: itemValue });
-            }}
-          >
-            <Picker.Item label="Select the occasion:" value="" />
-            <Picker.Item label="Business" value="Business" />
-            <Picker.Item label="Casual" value="Casual" />
-            <Picker.Item label="Formal" value="Formal" />
-            <Picker.Item label="Night Out" value="Night Out" />
-            <Picker.Item label="Sporty" value="Sporty" />
-          </Picker>
-          <Picker
-            selectedValue={this.state.color}
-            style={styles.formOptions}
-            onValueChange={(itemValue, itemIndex) => {
-              this.setState({ color: itemValue });
-            }}
-          >
-            <Picker.Item label="Select the color:" value="" />
-            <Picker.Item label="Red" value="Red" />
-            <Picker.Item label="Blue" value="Blue" />
-            <Picker.Item label="Yellow" value="Yellow" />
-            <Picker.Item label="White" value="White" />
-            <Picker.Item label="Violet" value="Violet" />
-            <Picker.Item label="Pink" value="Pink" />
-            <Picker.Item label="Orange" value="Orange" />
-            <Picker.Item label="Black" value="Black" />
-            <Picker.Item label="Green" value="Green" />
-          </Picker>
-          <Picker
-            selectedValue={this.state.season}
-            style={styles.formOptions}
-            onValueChange={(itemValue, itemIndex) => {
-              this.setState({ season: itemValue });
-            }}
-          >
-            <Picker.Item label="Select the season:" value="" />
-            <Picker.Item label="Winter" value="Winter" />
-            <Picker.Item label="Spring" value="Spring" />
-            <Picker.Item label="Summer" value="Summer" />
-            <Picker.Item label="Fall" value="Fall" />
-          </Picker>
-          <Picker
-            selectedValue={this.state.category}
-            style={styles.formOptions}
-            onValueChange={(itemValue, itemIndex) => {
-              this.setState({ category: itemValue });
-            }}
-          >
-            <Picker.Item label="Select the item type:" value="" />
-            <Picker.Item label="Top" value="tops" />
-            <Picker.Item label="Bottom" value="bottoms" />
-            <Picker.Item label="Full Body" value="fullbody" />
-          </Picker>
-
-          <Text>{'\n'}</Text>
-          <Text>{'\n'}</Text>
+          <Form details={this.state} updateState={this.updateState} />
 
           <TouchableOpacity style={styles.button} onPress={this.addItem}>
             <Text style={styles.buttonText}>Add to Closet</Text>
           </TouchableOpacity>
+
         </View>
       </ScrollView>
     );
