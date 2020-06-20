@@ -12,9 +12,8 @@ import SignUp from './screens/SignUp';
 const Stack = createStackNavigator();
 
 export default function App(props) {
-  const isLoadingComplete = useCachedResources();
-  const [state, globalDispatch] = globalContext();
-
+  const [ isLoadingComplete, session_active ] = useCachedResources();
+  const [ state, globalDispatch ] = globalContext();
   if (!isLoadingComplete) {
     return null;
   } else {
@@ -24,7 +23,7 @@ export default function App(props) {
         <NavigationContainer>
           <GlobalContext.Provider value={ {...state, ...globalDispatch} }>
             <Stack.Navigator>
-              {!state.logged_in ? (
+              {!state.logged_in && !session_active ? (
                 <>
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name="SignUp" component={SignUp} options={{ title: '' }} />

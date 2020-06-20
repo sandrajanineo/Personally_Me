@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Firebase from '../dbConfig';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const GlobalContext = React.createContext();
 
@@ -15,6 +16,12 @@ export default function globalContext (){
             userID: action.user.uid,
             login_failed: false
           };
+        case 'SESSION_ACTIVE':
+          return {
+            ...prevState,
+            session_active: action.userID ? true : false,
+            userID: action.userID || '',
+          }
         case 'LOGIN_FAILED':
           return {
             ...prevState,
@@ -46,6 +53,7 @@ export default function globalContext (){
     },
     {
       logged_in: false,
+      session_active: null,
       login_failed: false,
       isSignout: false,
       userID: '',
@@ -60,8 +68,9 @@ export default function globalContext (){
     () => ({
       signIn: (email, password) => {
         Firebase.auth().signInWithEmailAndPassword(email, password)
-        .then( () => {
+        .then( async () => {
           let user = Firebase.auth().currentUser;
+          await storeUser(user.uid);
           dispatch({ type: 'SIGN_IN', user })
         })
         .catch( () => dispatch({ type: 'LOGIN_FAILED' }) )
@@ -69,11 +78,21 @@ export default function globalContext (){
 
       signUp: ( email, password ) => {
         Firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then( () => {
+        .then( async () => {
           let user = Firebase.auth().currentUser;
+          await storeUser(user.uid);
           dispatch({ type: 'SIGN_IN', user })
         })
         .catch( () => dispatch({ type: 'SIGNUP_FAILED' }) )
+      },
+
+      fetchSession: async () => {
+        try {
+          const userID = await AsyncStorage.getItem('userID');
+          dispatch({ type: 'SESSION_ACTIVE', userID: userID });
+        } catch (err) {
+          console.log('error fetching session');
+        }
       },
 
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
@@ -196,4 +215,14 @@ const createImageBLOB = async (uri, name) => {
   blob.close();
 
   return await snapshot.ref.getDownloadURL();
+}
+
+const storeUser = async (userID) => {
+  try {
+    await AsyncStorage.setItem('userID', userID);
+    return;
+  }
+  catch (err) {
+    console.log('error storing userID');
+  }
 }

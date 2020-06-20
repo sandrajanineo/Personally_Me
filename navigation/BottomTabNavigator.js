@@ -5,12 +5,18 @@ import TabBarIcon from '../components/TabBarIcon';
 
 import HomeStack from './HomeStack';
 import ProductsStack from './ProductsStack';
+import { GlobalContext } from '../hooks/global';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+
+  const { fetchSession } = React.useContext(GlobalContext);
+  React.useEffect(() => {
+    fetchSession();
+  }, []);
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
