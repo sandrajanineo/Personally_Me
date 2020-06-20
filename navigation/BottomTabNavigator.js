@@ -19,7 +19,8 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={HomeStack}
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
+            name={ Platform.OS === 'ios' ? 'ios-home' : 'md-home'} />,
         }}
       />
       <BottomTab.Screen
@@ -27,7 +28,8 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={ProductsStack}
         options={{
           title: 'Your Closet',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} 
+            name={ Platform.OS === 'ios' ? 'ios-pricetags' : 'md-pricetags'} />,
         }}
       />
     </BottomTab.Navigator>
