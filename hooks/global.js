@@ -12,8 +12,19 @@ export default function globalContext (){
             ...prevState,
             isSignout: false,
             logged_in: true,
-            userID: action.user.uid
+            userID: action.user.uid,
+            login_failed: false
           };
+        case 'LOGIN_FAILED':
+          return {
+            ...prevState,
+            login_failed: true
+          }
+        case 'SIGNUP_FAILED':
+          return {
+            ...prevState,
+            signUp_failed: true
+          }
         case 'SIGN_OUT':
           return {
             ...prevState,
@@ -35,11 +46,13 @@ export default function globalContext (){
     },
     {
       logged_in: false,
+      login_failed: false,
       isSignout: false,
       userID: '',
       closet: [],
       outfit: [],
       outfitReady: false,
+      signUp_failed: false,
     }
   );
 
@@ -51,17 +64,20 @@ export default function globalContext (){
           let user = Firebase.auth().currentUser;
           dispatch({ type: 'SIGN_IN', user })
         })
-        .catch( error => console.log(error) )
+        .catch( () => dispatch({ type: 'LOGIN_FAILED' }) )
       },
+
       signUp: ( email, password ) => {
         Firebase.auth().createUserWithEmailAndPassword(email, password)
         .then( () => {
           let user = Firebase.auth().currentUser;
           dispatch({ type: 'SIGN_IN', user })
         })
-        .catch( error => console.log(error) )
+        .catch( () => dispatch({ type: 'SIGNUP_FAILED' }) )
       },
+
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
+
       fetchCollection: ( userID, category ) => {
         Firebase.firestore()
           .collection(userID).doc(category).collection(category)
@@ -75,6 +91,7 @@ export default function globalContext (){
             error => console.log('error: ', error)
           );
       },
+
       addItem: async ( userID, category, details ) => {
         let date = new Date();
         let imageName = "img" + Math.random().toString(36).slice(2) + date.getHours().toString(36);

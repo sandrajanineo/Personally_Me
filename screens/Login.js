@@ -1,40 +1,52 @@
 import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button, Alert } from 'react-native';
 
 import { GlobalContext } from '../hooks/global';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 export default function Login ( {navigation} ) {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const { signIn } = React.useContext(GlobalContext);
+  const { signIn, login_failed } = React.useContext(GlobalContext);
+
+  React.useEffect(() => {
+    if ( login_failed ){
+      Alert.alert('Username and/or password incorrect. Try Again.');
+    }
+  }, [ login_failed ]);
+
 
   return (
     <View style={styles.container}>
-      <TextInput
-          style={styles.inputBox}
-          value={email}
-          onChangeText={email => setEmail( email )}
-          placeholder='Email'
-          autoCapitalize='none'
-      />
-      <TextInput
-          style={styles.inputBox}
-          value={password}
-          onChangeText={password => setPassword( password )}
-          placeholder='Password'
-          secureTextEntry={true}
-      />
-      <TouchableOpacity
-          style={styles.button}
-          onPress={ () => signIn(email, password) }
-      >
-          <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <Button 
-          title="Don't have an account yet? Sign up"
-          onPress={() => navigation.navigate('SignUp') }
-      />
+      <View style={styles.contentContainer}>
+        <TextInput
+            style={styles.inputBox}
+            value={email}
+            onChangeText={email => setEmail( email )}
+            placeholder='Email'
+            placeholderTextColor='white'
+            autoCapitalize='none'
+        />
+        <TextInput
+            style={styles.inputBox}
+            value={password}
+            onChangeText={password => setPassword( password )}
+            placeholder='Password'
+            placeholderTextColor='white'
+            secureTextEntry={true}
+        />
+        <TouchableOpacity
+            style={styles.button}
+            onPress={ () => signIn(email, password) }
+        >
+            <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <Button 
+            title="Don't have an account yet? Sign up"
+            onPress={() => navigation.navigate('SignUp') }
+        />
+      </View>
     </View>
   );
 }
@@ -43,41 +55,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#48D1CC',
+    alignItems: 'center',
   },
   contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  welcomeImage: {
-    width: 350,
-    height: 350,
-    resizeMode: 'contain',
-    marginLeft: -10,
-  },
-  welcomeText: {
-    fontSize: 30,
-    color: 'white',
-    lineHeight: 35,
-    textAlign: 'center',
-    marginTop: 10,
-  },
-  text: {
-    fontSize: 25,
-    color: 'white',
-    lineHeight: 30,
-    textAlign: 'center',
+    marginTop: 50
   },
   button: {
     color: '#0000CD',
     backgroundColor: 'white',
     borderColor: 'white',
     borderWidth: 10,
+    marginBottom: 20
   },
   buttonText: {
     fontSize: 20,
@@ -85,12 +73,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputBox: {
-    width: '85%',
     margin: 10,
     padding: 15,
     fontSize: 16,
     borderColor: '#d3d3d3',
     borderBottomWidth: 1,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white',
   },
 });

@@ -48,9 +48,11 @@ const styles = StyleSheet.create({
   },
   welcomeImage: {
     width: 350,
-    height: 350,
+    height: 225,
     resizeMode: 'contain',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 15,
+    marginBottom: 25
   },
   welcomeText: {
     fontSize: 30,

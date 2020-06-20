@@ -18,7 +18,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="HomeStack"
         component={HomeStack}
         options={{
-          title: 'Get Started',
+          title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
         }}
       />
