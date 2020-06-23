@@ -26,7 +26,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
-            name={ Platform.OS === 'ios' ? 'ios-home' : 'md-home'} />,
+            name={ Platform.OS === 'ios' ? 'ios-home' : 'md-home'} style={{ marginBottom: -3 }} />,
         }}
       />
       <BottomTab.Screen
@@ -35,7 +35,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Your Closet',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} 
-            name={ Platform.OS === 'ios' ? 'ios-pricetags' : 'md-pricetags'} />,
+            name={ Platform.OS === 'ios' ? 'ios-pricetags' : 'md-pricetags'} style={{ marginBottom: -3 }} />,
         }}
       />
     </BottomTab.Navigator>

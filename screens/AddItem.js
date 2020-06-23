@@ -110,11 +110,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: 'white',
     borderWidth: 10,
+    width: 200,
+    marginTop: 15,
   },
   buttonText: {
     fontSize: 20,
     lineHeight: 20,
     textAlign: 'center',
+    fontWeight: 'bold',
+    width: 180,
   },
   image: {
     width: 200,
