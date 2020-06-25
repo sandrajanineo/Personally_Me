@@ -44,18 +44,6 @@ const Form = (props) => {
 
 export default Form;
 
-const styles = StyleSheet.create({
-  formOptions: {
-    height: 200,
-    width: '95%',
-    paddingTop: 10,
-    marginBottom: 10,
-    marginTop: 10,
-    paddingBottom: 50,
-    alignSelf: 'center',
-  }
-});
-
 
       // <Picker
       //   selectedValue={details.occassion}

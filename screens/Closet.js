@@ -8,7 +8,7 @@ export default function Closet ( {navigation} ) {
     <View style={styles.container}>
       <ScrollView>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Collection', { collection: 'tops' })}
+          onPress={() => navigation.navigate('Collection', { collection: 'Tops' })}
           style={styles.imageDiv}
         >
           <Image
@@ -24,7 +24,7 @@ export default function Closet ( {navigation} ) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Collection', { collection: 'bottoms' } )}
+          onPress={() => navigation.navigate('Collection', { collection: 'Bottoms' } )}
           style={styles.imageDiv}
         >
           <Image
@@ -40,7 +40,7 @@ export default function Closet ( {navigation} ) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Collection', { collection: 'fullbody' } )}
+          onPress={() => navigation.navigate('Collection', { collection: 'One Piece' } )}
           style={styles.imageDiv}
         >
           <Image
@@ -51,7 +51,7 @@ export default function Closet ( {navigation} ) {
             style={styles.image}
           />
           <Text>{'\n'}</Text>
-          <Text style={styles.title}>Full Body</Text>
+          <Text style={styles.title}>One Piece</Text>
           <Text>{'\n'}</Text>
         </TouchableOpacity>
       </ScrollView>

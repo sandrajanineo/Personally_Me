@@ -5,25 +5,25 @@ import TabBarIcon from './TabBarIcon';
 
 export default DropDown = (props) => {
   const [ modalVisible, setModalVisible ] = React.useState( { show: false, active: null } );
-  const { data } = props;
+  const { data, updateState } = props;
 
   return (
     <View>
-      {data.map( (section) => {
-        return (
-          <View key={section.key} style={styles.container}>
-            <TouchableOpacity
-              onPress={() => setModalVisible({ show: true, active: section.key })}
-              style={styles.label}
-            >
-              <Text style={styles.textStyle}>{section.label}
-              </Text>
-              <TabBarIcon name="md-arrow-dropdown"
-                style={styles.icon}/>
-            </TouchableOpacity>
-          </View>
-        )
-      })}
+      {data.map( section => (
+        <View key={section.key} style={styles.container}>
+          <TouchableOpacity
+            onPress={() => setModalVisible({ show: true, active: section.key })}
+            style={styles.label}
+          >
+            <Text style={styles.textStyle}>{section.label}</Text>
+            <TabBarIcon name="md-arrow-dropdown"
+              style={styles.icon}/>
+          </TouchableOpacity>
+          <Text style={styles.selected}>
+            {section.selected ? `You selected: ${section.selected}` : ''}
+          </Text>
+        </View>
+      ))}
       <Modal visible={modalVisible.show} transparent={true} >
         <View style={styles.modalView}>
           <TouchableOpacity
@@ -34,10 +34,13 @@ export default DropDown = (props) => {
           </TouchableOpacity>
           <FlatList
             data={modalVisible.show ? data[modalVisible.active]['options'] : []}
-            renderItem={ ( { item } ) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.modalTouch}
-                onPress={ () => props.updateState(item.category, item.value) }
+                onPress={ () => {
+                  updateState(item.category, item.value);
+                  setModalVisible({ show: false, active: null });
+                }}
               >
                 <Text style={styles.modalText}>{item.value}</Text>
               </TouchableOpacity>
@@ -102,6 +105,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: '100%',
     padding: 5
+  },
+  selected: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16
   },
   list: {
     width: '90%',
