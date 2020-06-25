@@ -35,7 +35,10 @@ export default DropDown = (props) => {
           <FlatList
             data={modalVisible.show ? data[modalVisible.active]['options'] : []}
             renderItem={ ( { item } ) => (
-              <TouchableOpacity style={styles.modalTouch}>
+              <TouchableOpacity
+                style={styles.modalTouch}
+                onPress={ () => props.updateState(item.category, item.value) }
+              >
                 <Text style={styles.modalText}>{item.value}</Text>
               </TouchableOpacity>
             )}

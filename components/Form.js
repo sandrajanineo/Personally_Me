@@ -8,33 +8,36 @@ const Form = (props) => {
   
   let data = [{
     key: 0,
-    label: "Select the occasion ",
-    options: [ { value: 'Business' }, { value: 'Casual' }, { value: 'Night Out' }, { value: 'Sports' } ],
-    selected: null
+    label: "Select the occassion ",
+    options: [ { category: 'occassion', value: 'Business' }, { category: 'occassion', value: 'Casual' }, { category: 'occassion', value: 'Night Out' },
+              { category: 'occassion', value: 'Sports' } ],
+    selected: details.occassion
   },
   {
     key: 1,
     label: "Select the season ",
-    options: [ { value: 'Fall' }, { value: 'Spring' }, { value: 'Summer' }, { value: 'Winter' } ],
-    selected: null
+    options: [ { category: 'season', value: 'Fall' }, { category: 'season', value: 'Spring' }, { category: 'season', value: 'Summer' },
+              { category: 'season', value: 'Winter' } ],
+    selected: details.season
   },
   {
     key: 2,
     label: "Select the color ",
-    options: [ { value: 'Black' }, { value: 'Blue' }, { value: 'Green' }, { value: 'Orange' }, { value: 'Pink' }, { value: 'Red' }, { value: 'Violet' },
-            { value: 'White' }, { value: 'Yellow' }],
-    selected: null
+    options: [ { category: 'color', value: 'Black' }, { category: 'color', value: 'Blue' }, { category: 'color', value: 'Green' },
+              { category: 'color', value: 'Orange' }, { category: 'color', value: 'Pink' }, { category: 'color', value: 'Red' },
+              { category: 'color', value: 'Violet' }, { category: 'color', value: 'White' }, { category: 'color', value: 'Yellow' }],
+    selected: details.color
   },
   {
     key: 3,
     label: "Select the type ",
-    options: [ { value: 'Bottoms' }, { value: 'One Piece' }, { value: 'Tops' } ],
-    selected: null
+    options: [ { category: 'type', value: 'Bottoms' }, { category: 'type', value: 'One Piece' }, { category: 'type', value: 'Tops' } ],
+    selected: details.type
   }];
   
   return (
     <>
-      <DropDown data={data} />
+      <DropDown data={data} updateState={updateState} />
     </>
   )
 };

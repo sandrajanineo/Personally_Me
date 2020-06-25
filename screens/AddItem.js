@@ -23,7 +23,7 @@ export default class AddItem extends React.Component {
       occassion: '',
       color: '',
       season: '',
-      category: '',
+      type: '',
     };
     this.addItem = this.addItem.bind(this);
     this.updateState = this.updateState.bind(this);
@@ -31,14 +31,14 @@ export default class AddItem extends React.Component {
 
   addItem() {
     const contxt = this.context
-    contxt.addItem(contxt.userID, this.state.category, this.state);
+    contxt.addItem(contxt.userID, this.state.type, this.state);
 
     this.setState({
       image: null,
       occassion: '',
       color: '',
       season: '',
-      category: '',
+      type: '',
     });
 
     Alert.alert('Item Added Successfully!');
@@ -50,20 +50,24 @@ export default class AddItem extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.headerText}>Add To Your Collection!</Text>
+      <ScrollView style={ styles.container }>
+        <View style={ styles.formContainer }>
+          <Text style={ styles.headerText }>Add To Your Collection!</Text>
 
-          <PickImage image={this.state.image} addImage={this.updateState} />
+          <PickImage image={ this.state.image } addImage={ this.updateState } />
 
           {this.state.image && (
-            <Image source={{ uri: this.state.image }} style={styles.image} />
+            <Image source={{ uri: this.state.image }} style={ styles.image } />
           )}
 
-          <Form details={this.state} updateState={this.updateState} />
+          <Form details={ this.state } updateState={ this.updateState } />
 
-          <TouchableOpacity style={styles.button} onPress={this.addItem}>
-            <Text style={styles.buttonText}>Add to Closet</Text>
+          <TouchableOpacity
+            style={ this.state.image && this.state.type ? styles.button : styles.buttonDisabled }
+            onPress={ this.addItem }
+            disabled={ this.state.image && this.state.type ? false : true }
+          >
+            <Text style={ styles.buttonText }>Add to Closet</Text>
           </TouchableOpacity>
 
         </View>
@@ -112,6 +116,15 @@ const styles = StyleSheet.create({
     borderWidth: 10,
     width: 200,
     marginTop: 15,
+  },
+    buttonDisabled: {
+    color: '#0000CD',
+    backgroundColor: 'white',
+    borderColor: 'white',
+    borderWidth: 10,
+    width: 200,
+    marginTop: 15,
+    opacity: 0.5
   },
   buttonText: {
     fontSize: 20,
