@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, Text, View, Modal, TouchableOpacity, FlatList, VirtualizedList} from 'react-native';
 import TabBarIcon from './TabBarIcon';
 
@@ -16,8 +15,7 @@ export default DropDown = (props) => {
             style={styles.label}
           >
             <Text style={styles.textStyle}>{section.label}</Text>
-            <TabBarIcon name="md-arrow-dropdown"
-              style={styles.icon}/>
+            <TabBarIcon name="md-arrow-dropdown" style={styles.icon} />
           </TouchableOpacity>
           <Text style={styles.selected}>
             {section.selected ? `You selected: ${section.selected}` : ''}
@@ -30,7 +28,7 @@ export default DropDown = (props) => {
             style={styles.closeModal}
             onPress={ () => setModalVisible({ show: false, active: null }) }
           >
-            <Text style={styles.close}>X</Text>
+          <TabBarIcon name="md-close-circle" style={styles.close}/>
           </TouchableOpacity>
           <FlatList
             data={modalVisible.show ? data[modalVisible.active]['options'] : []}
@@ -123,10 +121,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     padding: 10,
-    paddingRight: 15
+    paddingRight: 10
   },
   close: {
-    fontSize: 12,
+    fontSize: 20,
     color: 'gray',
   },
 });
