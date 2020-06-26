@@ -11,7 +11,11 @@ export default function Collection ( props ) {
 
   return (
     <>
-    <ItemList items={state.closet} navigation={props.navigation} />
+    <ItemList
+      items={ state.closet }
+      navigation={ props.navigation }
+      deleteItem={ state.deleteItem }
+      userID={state.userID} />
     </>
   )
 }

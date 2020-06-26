@@ -1,8 +1,27 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet, TouchableOpacity, View, Image, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, Text, Alert } from 'react-native';
+
+import TabBarIcon from './TabBarIcon';
 
 export default ItemList = props => {
+
+  const removeItem = ( deleteItem, item ) => {
+    Alert.alert(
+      "Confirmation Required",
+      "Do you want to delete this item from your closet?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Yes", onPress: () => deleteItem( props.userID, item )}
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -15,14 +34,16 @@ export default ItemList = props => {
         
         {props.items.map((item, i) => {
           return (
-            <TouchableOpacity
-              key={i}
-              onPress={() => props.navigation.navigate('ItemDetail', { item })}
-            >
-              <View style={styles.imageContainer}>
-                <Image source={{ uri: item.imageURL }} style={styles.image} />
-              </View>
-            </TouchableOpacity>
+            <View style={styles.imageContainer} key={i} >
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate('ItemDetail', { item })}
+              >
+                  <Image source={{ uri: item.imageURL }} style={styles.image} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconContainer} onPress={() => removeItem( props.deleteItem, item )} >
+                <TabBarIcon name="md-trash" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
           );
         })}
       </ScrollView>
@@ -38,7 +59,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   imageContainer: {
-    display: 'flex',
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
@@ -69,4 +89,12 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'center',
   },
+  icon: {
+    color: 'white',
+  },
+  iconContainer: {
+    position: 'absolute',
+    right: 5,
+    top: -10,
+  }
 });

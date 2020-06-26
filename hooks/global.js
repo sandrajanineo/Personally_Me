@@ -128,11 +128,20 @@ export default function globalContext (){
 
       updateItem: ( userID, docName, details ) => {
         Firebase.firestore()
-        .collection( userID ).doc( details.category )
-        .collection( details.category ).doc( docName )
+        .collection( userID ).doc( details.type )
+        .collection( details.type ).doc( docName )
         .update( details )
         .then( () => console.log('update successful'))
         .catch( error => console.log( error ) )
+      },
+
+      deleteItem: (userID, item) => {
+        Firebase.firestore()
+        .collection(userID).doc(item.type)
+        .collection(item.type).doc(item.image)
+        .delete()
+        .then( () => console.log('item deleted'))
+        .catch( error => console.log('error deleting item: ', error) )
       },
 
       generateOutfit: ( userID, categories, seasonSelected, occassionSelected ) => {
