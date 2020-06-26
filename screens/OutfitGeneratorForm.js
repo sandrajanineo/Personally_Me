@@ -1,73 +1,54 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Picker, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function OutfitGeneratorForm ( {navigation} ) {
-  let [type, setType] = React.useState(null);
-  let [occasion, setOccasion] = React.useState(null);
-  let [season, setSeason] = React.useState(null);
-  
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.formContainer}>
-        <Picker
-            selectedValue={ type }
-            style={styles.formOptions}
-            onValueChange={(itemValue) => {
-              setType( itemValue );
-            }}
+import Form from '../components/Form';
+
+export default class OutfitGeneratorForm extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      image: null,
+      occassion: '',
+      color: '',
+      season: '',
+      type: '',
+    };
+    this.updateState = this.updateState.bind(this);
+  }
+
+  updateState( key, val ){
+    this.setState({ [key]: val });
+  }
+
+  render() {
+      console.log(this.props);
+    return (
+      <ScrollView style={ styles.container }>
+        <View style={ styles.formContainer }>
+
+          <Form details={ this.state }
+                updateState={ this.updateState }
+                screen={ this.props.route.name }
+          />
+
+          <TouchableOpacity
+            style={ this.state.type ? styles.button : styles.buttonDisabled }
+            onPress={() => this.props.navigation.navigate('OutfitGenerator', {
+              type: this.state.type,
+              occassion: this.state.occassion,
+              season: this.state.season
+            })}
+            disabled={ this.state.type ? false : true }
           >
-          <Picker.Item label="Select the type of outfit:" value="" />
-          <Picker.Item label="One Piece" value="fullbody" />
-          <Picker.Item label="Two Piece" value="topNbottom" />
-        </Picker>
+            <Text style={ styles.buttonText }>Dress Me!</Text>
+          </TouchableOpacity>
 
-        <Picker
-          selectedValue={ occasion }
-          style={styles.formOptions}
-          onValueChange={(itemValue) => {
-            setOccasion( itemValue );
-          }}
-        >
-          <Picker.Item label="Select the type of occasion:" value="" />
-
-          <Picker.Item label="Business" value="business" />
-          <Picker.Item label="Casual" value="casual" />
-          <Picker.Item label="Formal" value="formal" />
-          <Picker.Item label="Night Out" value="nightOut" />
-          <Picker.Item label="Sporty" value="sporty" />
-        </Picker>
-
-        <Picker
-          selectedValue={ season }
-          style={styles.formOptions}
-          onValueChange={(itemValue) => {
-            setSeason( itemValue );
-          }}
-        >
-          <Picker.Item label="Select the season:" value="" />
-          <Picker.Item label="Winter" value="winter" />
-          <Picker.Item label="Spring" value="spring" />
-          <Picker.Item label="Summer" value="summer" />
-          <Picker.Item label="Fall" value="fall" />
-        </Picker>
-
-        <Text>{'\n'}</Text>
-
-        <TouchableOpacity style={styles.button} 
-          onPress={ () =>
-            navigation.navigate('OutfitGenerator', {
-              type,
-              occasion,
-              season
-            })
-          }
-          >
-          <Text style={styles.buttonText}>Dress Me!</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  )
+        </View>
+      </ScrollView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -114,6 +95,14 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 10,
     marginBottom: 20,
+  },
+  buttonDisabled: {
+    color: '#0000CD',
+    backgroundColor: 'white',
+    borderColor: 'white',
+    borderWidth: 10,
+    marginBottom: 20,
+    opacity: 0.5
   },
   buttonText: {
     fontSize: 20,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Button, Alert } from 'react-native';
+import { Button, Alert, StyleSheet, View } from 'react-native';
 import * as Linking from 'expo-linking';
 
 export default function PickImage ( props ) {
@@ -37,11 +37,14 @@ export default function PickImage ( props ) {
   }
 
   return (
-    <>
-    <Button
-      title="Pick an image from camera roll"
-      onPress={pickImage}
-    />
-    </>
+    <View style={styles.container} >
+      <Button title="Select an image *" onPress={pickImage} />
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 10
+  }
+})

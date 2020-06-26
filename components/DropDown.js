@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     backgroundColor: 'white',
-    marginBottom: 15,
-    marginTop: 15,
+    marginBottom: 5,
+    marginTop: 5,
     width: 180,
   },
   icon: {
     backgroundColor: 'white',
-    marginBottom: 15,
-    marginTop: 15,
+    marginBottom: 5,
+    marginTop: 5,
     paddingRight: 10,
     paddingTop: 5
   },
@@ -109,7 +109,8 @@ const styles = StyleSheet.create({
   selected: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
+    marginBottom: 10,
   },
   list: {
     width: '90%',

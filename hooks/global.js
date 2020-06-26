@@ -168,7 +168,7 @@ export default function globalContext (){
   return [state, globalDispatch];
 }
 
-const outfitGenerator = (items, categories, season, occasion) => {
+const outfitGenerator = ( items, categories ) => {
   let outfit = [];
   if ( categories.length === 2 ){
     let randomTop = null;

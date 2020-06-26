@@ -10,11 +10,11 @@ export default function OutfitGenerator (props) {
   React.useEffect(() => {
     let { season, occasion } = props.route.params;
 
-    if (props.route.params.type === 'fullbody'){
-      return state.generateOutfit( state.userID, ['fullbody'], season, occasion );
+    if (props.route.params.type === 'One Piece'){
+      return state.generateOutfit( state.userID, ['One Piece'], season, occasion );
     }
     else {
-      return state.generateOutfit( state.userID, ['tops', 'bottoms'], season, occasion );
+      return state.generateOutfit( state.userID, ['Tops', 'Bottoms'], season, occasion );
     }
 
   }, []);

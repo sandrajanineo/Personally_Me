@@ -115,15 +115,15 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 10,
     width: 200,
-    marginTop: 15,
+    marginTop: 10,
   },
-    buttonDisabled: {
+  buttonDisabled: {
     color: '#0000CD',
     backgroundColor: 'white',
     borderColor: 'white',
     borderWidth: 10,
     width: 200,
-    marginTop: 15,
+    marginTop: 10,
     opacity: 0.5
   },
   buttonText: {
