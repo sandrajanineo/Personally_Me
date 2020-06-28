@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     position: 'absolute',
-    right: 5,
+    right: 30,
     top: -10,
   }
 });
