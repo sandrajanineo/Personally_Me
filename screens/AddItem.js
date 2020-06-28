@@ -6,74 +6,77 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Alert
+  Alert,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 
 import PickImage from '../components/PickImage';
 import Form from '../components/Form';
 import { GlobalContext } from '../hooks/global';
 
-export default class AddItem extends React.Component {
-  static contextType = GlobalContext;
+export default AddItem = () => {
+  let { userID, addItem, success, error, resetState } = React.useContext( GlobalContext );
+  let [ details, setDetails ] = React.useState({ image: null, occassion: '', color: '', season: '', type: '' });
+  let [ loading, setLoading ] = React.useState( false );
 
-  constructor() {
-    super();
-    this.state = {
-      image: null,
-      occassion: '',
-      color: '',
-      season: '',
-      type: '',
-    };
-    this.addItem = this.addItem.bind(this);
-    this.updateState = this.updateState.bind(this);
-  }
+  React.useEffect(() => {
+    if ( loading ) {
+      setLoading( false );
+      setDetails({ image: null, occassion: '', color: '', season: '', type: '' });
 
-  addItem() {
-    const contxt = this.context
-    contxt.addItem(contxt.userID, this.state.type, this.state);
+      if ( success ){
+        Alert.alert('Item Added Successfully!');
+      }
+      if ( error ){
+        Alert.alert('An unexpected error occured. Please try again.');
+      }
 
-    this.setState({
-      image: null,
-      occassion: '',
-      color: '',
-      season: '',
-      type: '',
+      resetState( success ? 'success' : 'error' );
+    }
+
+  }, [ success, error ]);
+
+  const updateState = ( key, val ) => {
+    setDetails({
+      ...details,
+      [key]: val
     });
-
-    Alert.alert('Item Added Successfully!');
   }
 
-  updateState( key, val ){
-    this.setState({ [key]: val });
-  }
+  return (
+    <ScrollView style={ styles.container }>
+      <View style={ styles.formContainer }>
+        <Text style={ styles.headerText }>Add To Your Collection!</Text>
 
-  render() {
-    return (
-      <ScrollView style={ styles.container }>
-        <View style={ styles.formContainer }>
-          <Text style={ styles.headerText }>Add To Your Collection!</Text>
+        <PickImage image={ details.image } addImage={ updateState } />
 
-          <PickImage image={ this.state.image } addImage={ this.updateState } />
+        {details.image && (
+          <Image source={{ uri: details.image }} style={ styles.image } />
+        )}
 
-          {this.state.image && (
-            <Image source={{ uri: this.state.image }} style={ styles.image } />
-          )}
+        <Form details={ details } updateState={ updateState } />
 
-          <Form details={ this.state } updateState={ this.updateState } />
+        <Modal visible={ loading } transparent={ true } animationType="fade" >
+          <View style={ styles.modal }>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        </Modal>
 
-          <TouchableOpacity
-            style={ this.state.image && this.state.type ? styles.button : styles.buttonDisabled }
-            onPress={ this.addItem }
-            disabled={ this.state.image && this.state.type ? false : true }
-          >
-            <Text style={ styles.buttonText }>Add to Closet</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={ details.image && details.type ? styles.button : styles.buttonDisabled }
+          onPress={() => {
+            setLoading( true );
+            addItem( userID, details );
+          }}
+          disabled={ details.image && details.type ? false : true }
+        >
+          <Text style={ styles.buttonText }>Add to Closet</Text>
+        </TouchableOpacity>
 
-        </View>
-      </ScrollView>
-    );
-  }
+      </View>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -139,5 +142,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingTop: 60,
     paddingBottom: 60,
+  },
+  modal: {
+    marginTop: 200,
   },
 });

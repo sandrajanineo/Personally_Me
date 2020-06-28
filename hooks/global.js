@@ -48,19 +48,33 @@ export default function globalContext (){
             ...prevState,
             outfit: action.outfit,
             outfitReady: true
-        }
+          }
+        case 'ITEM_ADDED':
+          let outcome = action.error ? 'error' : 'success';
+          return {
+            ...prevState,
+            [ outcome ]: action[outcome]
+          }
+        case 'RESET_STATE':
+          let key = action.key;
+          return {
+            ...prevState,
+            [ key ]: null
+          }
       }
     },
     {
       logged_in: false,
       session_active: null,
-      login_failed: false,
+      login_failed: null,
       isSignout: false,
       userID: '',
       closet: [],
       outfit: [],
       outfitReady: false,
-      signUp_failed: false,
+      signUp_failed: null,
+      error: null,
+      success: null,
     }
   );
 
@@ -111,19 +125,20 @@ export default function globalContext (){
           );
       },
 
-      addItem: async ( userID, category, details ) => {
+      addItem: async ( userID, details ) => {
         let date = new Date();
         let imageName = "img" + Math.random().toString(36).slice(2) + date.getHours().toString(36);
         let imageURL = await createImageBLOB(details.image, imageName);
         details.imageURL = imageURL;
         details.image = imageName;
         Firebase.firestore()
-        .collection(userID).doc(category).set({ category })
+        .collection(userID).doc(details.type).set({ type: details.type })
         .then( () => {
-          let docRef = Firebase.firestore().collection(userID).doc(category)
-          docRef.collection(category).doc(imageName).set(details);
+          let docRef = Firebase.firestore().collection(userID).doc(details.type)
+          docRef.collection(details.type).doc(imageName).set(details);
+          dispatch({ type: 'ITEM_ADDED', success: 1 });
         })
-        .catch( error => console.log(error) );
+        .catch( () => dispatch({ type: 'ITEM_ADDED', error: 1 }) );
       },
 
       updateItem: ( userID, docName, details ) => {
@@ -169,7 +184,9 @@ export default function globalContext (){
             }
           })
         });
-      }
+      },
+
+      resetState: key => dispatch({ type: 'RESET_STATE', key: key })
     }),
     []
   );
