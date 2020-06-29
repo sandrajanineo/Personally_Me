@@ -7,13 +7,12 @@ import {
   TouchableOpacity,
   View,
   Alert,
-  ActivityIndicator,
-  Modal,
 } from 'react-native';
 
 import PickImage from '../components/PickImage';
 import Form from '../components/Form';
 import { GlobalContext } from '../hooks/global';
+import Loading from '../components/Loading';
 
 export default AddItem = () => {
   let { userID, addItem, success, error, resetState } = React.useContext( GlobalContext );
@@ -57,12 +56,6 @@ export default AddItem = () => {
 
         <Form details={ details } updateState={ updateState } />
 
-        <Modal visible={ loading } transparent={ true } animationType="fade" >
-          <View style={ styles.modal }>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        </Modal>
-
         <TouchableOpacity
           style={ details.image && details.type ? styles.button : styles.buttonDisabled }
           onPress={() => {
@@ -74,6 +67,7 @@ export default AddItem = () => {
           <Text style={ styles.buttonText }>Add to Closet</Text>
         </TouchableOpacity>
 
+        {loading && <Loading /> }
       </View>
     </ScrollView>
   );
@@ -142,8 +136,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingTop: 60,
     paddingBottom: 60,
-  },
-  modal: {
-    marginTop: 200,
   },
 });

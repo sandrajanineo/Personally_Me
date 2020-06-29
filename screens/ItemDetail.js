@@ -18,7 +18,7 @@ const ItemDetail = props => {
       setLoading( false );
 
       if ( success ){
-        Alert.alert('Item Added Successfully!');
+        Alert.alert('Item Details Edited Successfully!');
       }
       if ( error ){
         Alert.alert('An unexpected error occured. Please try again.');
