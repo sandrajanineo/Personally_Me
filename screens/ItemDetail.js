@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-na
 
 import { GlobalContext } from '../hooks/global';
 import Form from '../components/Form';
+import Loading from '../components/Loading';
 
 const ItemDetail = props => {
   const { updateItem, userID, success, error, resetState } = React.useContext( GlobalContext );
@@ -68,6 +69,7 @@ const ItemDetail = props => {
             </TouchableOpacity>
           </>
         )}
+        { loading && <Loading /> }
       </ScrollView>
     </View>
   )
