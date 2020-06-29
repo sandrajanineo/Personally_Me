@@ -17,7 +17,7 @@ const Form = (props) => {
     key: 1,
     label: "Select the occassion ",
     options: [ { category: 'occassion', value: 'Business' }, { category: 'occassion', value: 'Casual' }, { category: 'occassion', value: 'Night Out' },
-              { category: 'occassion', value: 'Sports' } ],
+              { category: 'occassion', value: 'Sporty' } ],
     selected: details.occassion
   },
   {
