@@ -43,6 +43,12 @@ export default function globalContext (){
             ...prevState,
             closet: action.items,
           }
+        case 'APPLY_FILTERS':
+          return {
+            ...prevState,
+            filtersApplied: action.filters,
+            filterActive: true
+          }
         case 'FETCH_OUTFIT':
           return {
             ...prevState,
@@ -57,9 +63,19 @@ export default function globalContext (){
           }
         case 'RESET_STATE':
           let key = action.key;
+          let val;
+          let filter;
+          if ( key === 'filtersApplied') {
+            val = {};
+            filter = null;
+          } else {
+            val = null;
+            filter = prevState.filterActive
+          }
           return {
             ...prevState,
-            [ key ]: null
+            [ key ]: val,
+            filterActive: filter
           }
       }
     },
@@ -75,6 +91,8 @@ export default function globalContext (){
       signUp_failed: null,
       error: null,
       success: null,
+      filtersApplied: {},
+      filterActive: null,
     }
   );
 
@@ -111,18 +129,27 @@ export default function globalContext (){
 
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
 
-      fetchCollection: ( userID, category ) => {
-        Firebase.firestore()
-          .collection(userID).doc(category).collection(category)
-          .onSnapshot( querySnapshot => {
-            let items = [];
-            querySnapshot.forEach( doc => {
-              items.push( doc.data() )
-            })
-            dispatch({ type: 'FETCH_COLLECTION', items });
-          },
-            error => console.log('error: ', error)
-          );
+      fetchCollection: ( userID, category, filtersApplied ) => {
+        let ref = Firebase.firestore().collection(userID).doc(category).collection(category)
+        if ( Object.keys(filtersApplied).length  ){
+          Object.keys(filtersApplied).forEach( key => {
+            ref = ref.where(`${key}`, "==", `${filtersApplied[key]}`)
+          })
+        }
+        ref.onSnapshot( querySnapshot => {
+          let items = [];
+          querySnapshot.forEach( doc => {
+            items.push( doc.data() )
+          })
+          dispatch({ type: 'FETCH_COLLECTION', items });
+        },
+          error => console.log('error: ', error)
+        );
+      },
+
+      filterCollection: ( filters ) => {
+        if ( !Object.keys(filters).length ) return;
+        dispatch({ type: 'APPLY_FILTERS', filters })
       },
 
       addItem: async ( userID, details ) => {

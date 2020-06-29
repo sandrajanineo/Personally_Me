@@ -3,7 +3,7 @@ import * as React from 'react';
 import DropDown from './DropDown';
 
 const Form = (props) => {
-  let { details, updateState, screen, disableType } = props;
+  let { details, updateState, screen, disableType, type } = props;
   
   let data = [{
     key: 0,
@@ -12,7 +12,7 @@ const Form = (props) => {
       [ { category: 'type', value: 'One Piece' }, { category: 'type', value: 'Two Piece' } ] 
       :
       [ { category: 'type', value: 'Bottoms' }, { category: 'type', value: 'One Piece' }, { category: 'type', value: 'Tops' } ],
-    selected: details.type
+    selected: details.type || type
   },{
     key: 1,
     label: "Select the occassion ",
