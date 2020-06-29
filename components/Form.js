@@ -3,7 +3,7 @@ import * as React from 'react';
 import DropDown from './DropDown';
 
 const Form = (props) => {
-  let { details, updateState, screen } = props;
+  let { details, updateState, screen, disableType } = props;
   
   let data = [{
     key: 0,
@@ -38,7 +38,7 @@ const Form = (props) => {
   
   return (
     <>
-      <DropDown data={data} updateState={updateState} />
+      <DropDown data={data} updateState={updateState} disableType={disableType} />
     </>
   )
 };

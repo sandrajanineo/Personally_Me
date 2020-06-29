@@ -1,43 +1,64 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 
 import { GlobalContext } from '../hooks/global';
 import Form from '../components/Form';
 
 const ItemDetail = props => {
-  const state = React.useContext( GlobalContext );
+  const { updateItem, userID, success, error, resetState } = React.useContext( GlobalContext );
   const { item } = props.route.params;
   let [ updatedFields, setFields ] = React.useState( item );
   let [ editMode, setEdit ] = React.useState( false );
-  
-  const updateState = (key, val) => {
+  let [ loading, setLoading ] = React.useState( false );
+
+  React.useEffect(() => {
+    if ( loading ) {
+      setLoading( false );
+
+      if ( success ){
+        Alert.alert('Item Added Successfully!');
+      }
+      if ( error ){
+        Alert.alert('An unexpected error occured. Please try again.');
+      }
+
+      resetState( success ? 'success' : 'error' );
+      setEdit( false );
+    }
+
+  }, [ success, error ]);
+
+  const updateState = ( key, val ) => {
     setFields({
       ...updatedFields,
-      [key]: val
+      [ key ]: val
     })
   }
 
   return (
-    <View style={styles.container}>
+    <View style={ styles.container }>
       <ScrollView>
         <Image source={{ uri: item.imageURL }} style={ styles.image } />
 
         { editMode ? (
           <View style={ styles.form }>
-            <Form updateState={ updateState } details={ updatedFields } disable={ true } />
+            <Form updateState={ updateState } details={ updatedFields } disableType={ true } />
               <TouchableOpacity
                 style={ styles.button }
-                onPress={ () => state.updateItem(state.userID, item.image, updatedFields) }
+                onPress={ () => {
+                  setLoading( true );
+                  updateItem( userID, item.image, updatedFields );
+                }}
               >
                 <Text style={ styles.buttonText }>Save</Text>
               </TouchableOpacity>
           </View>
         ) : (
           <>
-            <Text style={ styles.text }>Occassion: { item.occassion }</Text>
-            <Text style={ styles.text }>Color: { item.color }</Text>
-            <Text style={ styles.text }>Season: { item.season }</Text>
+            <Text style={ styles.text }>Occassion: { updatedFields.occassion }</Text>
+            <Text style={ styles.text }>Season: { updatedFields.season }</Text>
+            <Text style={ styles.text }>Color: { updatedFields.color }</Text>
             
             <TouchableOpacity
               style={ styles.button }
@@ -94,5 +115,5 @@ const styles = StyleSheet.create({
   },
   form: {
     margin: 30,
-  }
+  },
 });

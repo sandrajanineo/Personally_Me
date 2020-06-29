@@ -4,11 +4,16 @@ import TabBarIcon from './TabBarIcon';
 
 export default DropDown = (props) => {
   const [ modalVisible, setModalVisible ] = React.useState( { show: false, active: null } );
-  const { data, updateState } = props;
+  const { data, updateState, disableType } = props;
 
   return (
     <View>
       {data.map( section => (
+        section.key === 0 && disableType ? (
+        <View key={section.key} style={styles.container}>
+          <Text key={section.key} style={styles.typeText} >Type: {section.selected}</Text>
+        </View>
+        ) : (
         <View key={section.key} style={styles.container}>
           <TouchableOpacity
             onPress={() => setModalVisible({ show: true, active: section.key })}
@@ -21,7 +26,7 @@ export default DropDown = (props) => {
             {section.selected ? `You selected: ${section.selected}` : ''}
           </Text>
         </View>
-      ))}
+        )))}
       <Modal visible={modalVisible.show} transparent={true} >
         <View style={styles.modalView}>
           <TouchableOpacity
@@ -67,6 +72,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginBottom: 5,
     marginTop: 5,
+    width: 180,
+  },
+  typeText: {
+    textAlign: "center",
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: 'white',
+    marginBottom: 15,
     width: 180,
   },
   icon: {

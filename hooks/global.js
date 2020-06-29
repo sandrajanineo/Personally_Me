@@ -146,8 +146,8 @@ export default function globalContext (){
         .collection( userID ).doc( details.type )
         .collection( details.type ).doc( docName )
         .update( details )
-        .then( () => console.log('update successful'))
-        .catch( error => console.log( error ) )
+        .then( () => dispatch({ type: 'ITEM_ADDED', success: 1 }) )
+        .catch( () => dispatch({ type: 'ITEM_ADDED', error: 1 }) )
       },
 
       deleteItem: (userID, item) => {
