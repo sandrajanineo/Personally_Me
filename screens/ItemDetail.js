@@ -57,9 +57,38 @@ const ItemDetail = props => {
           </View>
         ) : (
           <>
-            <Text style={ styles.text }>Occassion: { updatedFields.occassion }</Text>
-            <Text style={ styles.text }>Season: { updatedFields.season }</Text>
-            <Text style={ styles.text }>Color: { updatedFields.color }</Text>
+          <View style={ styles.flexContainer }>
+            <Text style={ styles.text }>
+              <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
+              { updatedFields.occassion ?
+                <>
+                <Text style={ styles.title }>Occassion: </Text>
+                <Text style={ styles.detail }>{ updatedFields.occassion }</Text>
+                </>
+                : <Text>Occassion not selected</Text>
+              }
+            </Text>
+            <Text style={ styles.text }>
+              <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
+              { updatedFields.season ?
+                <>
+                <Text style={ styles.title }>Season: </Text>
+                <Text style={ styles.detail }>{ updatedFields.season }</Text>
+                </>
+                : <Text>Season not selected</Text>
+              }
+            </Text>
+            <Text style={ styles.text }>
+              <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
+              { updatedFields.color ?
+                <>
+                <Text style={ styles.title }>Color: </Text>
+                <Text style={ styles.detail }>{updatedFields.color}</Text>
+                </>
+                : <Text>Color not selected</Text>
+              }
+            </Text>
+          </View>
             
             <TouchableOpacity
               style={ styles.button }
@@ -88,17 +117,9 @@ const styles = StyleSheet.create({
     width: 300,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 3,
+    marginTop: 20,
     alignSelf: 'center',
-    borderWidth: 2,
-    borderColor: 'blue',
     marginBottom: 20
-  },
-  text: {
-    fontSize: 20,
-    lineHeight: 20,
-    textAlign: 'center',
-    marginBottom: 5
   },
   button: {
     color: '#0000CD',
@@ -114,8 +135,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 20,
     textAlign: 'center',
+    color: 'navy'
   },
   form: {
     margin: 30,
+  },
+  flexContainer: {
+    alignSelf: 'center',
+  },
+  bulletPoint: {
+    color: 'white',
+  },
+  text: {
+    fontSize: 20,
+    lineHeight: 20,
+    marginBottom: 5
+  },
+  title: {
+    color: 'white'
+  },
+  detail: {
+    color: 'navy'
   },
 });
