@@ -134,9 +134,8 @@ const styles = StyleSheet.create({
   image: {
     width: 300,
     height: 200,
-    resizeMode: 'contain',
+    resizeMode: 'center',
     marginTop: 3,
-    alignSelf: 'center',
   },
   button: {
     backgroundColor: '#48D1CC',
