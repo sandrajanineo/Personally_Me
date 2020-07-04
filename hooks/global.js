@@ -159,10 +159,10 @@ export default function globalContext (){
         details.imageURL = imageURL;
         details.image = imageName;
         Firebase.firestore()
-        .collection(userID).doc(details.type).set({ type: details.type })
+        .collection(userID).doc(details.Type).set({ Type: details.Type })
         .then( () => {
-          let docRef = Firebase.firestore().collection(userID).doc(details.type)
-          docRef.collection(details.type).doc(imageName).set(details);
+          let docRef = Firebase.firestore().collection(userID).doc(details.Type)
+          docRef.collection(details.Type).doc(imageName).set(details);
           dispatch({ type: 'ITEM_ADDED', success: 1 });
         })
         .catch( () => dispatch({ type: 'ITEM_ADDED', error: 1 }) );

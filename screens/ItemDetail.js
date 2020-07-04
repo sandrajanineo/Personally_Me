@@ -9,6 +9,8 @@ import Loading from '../components/Loading';
 const ItemDetail = props => {
   const { updateItem, userID, success, error, resetState } = React.useContext( GlobalContext );
   const { item } = props.route.params;
+  delete item.image;
+  delete item.imageURL;
   let [ updatedFields, setFields ] = React.useState( item );
   let [ editMode, setEdit ] = React.useState( false );
   let [ loading, setLoading ] = React.useState( false );
@@ -41,63 +43,28 @@ const ItemDetail = props => {
     <View style={ styles.container }>
       <ScrollView>
         <Image source={{ uri: item.imageURL }} style={ styles.image } />
-
-        { editMode ? (
-          <View style={ styles.form }>
-            <Form updateState={ updateState } details={ updatedFields } disableType={ true } />
-              <TouchableOpacity
-                style={ styles.button }
-                onPress={ () => {
-                  setLoading( true );
-                  updateItem( userID, item.image, updatedFields );
-                }}
-              >
-                <Text style={ styles.buttonText }>Save</Text>
-              </TouchableOpacity>
-          </View>
-        ) : (
-          <>
           <View style={ styles.flexContainer }>
-            <Text style={ styles.text }>
-              <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
-              { updatedFields.occassion ?
-                <>
-                <Text style={ styles.title }>Occassion: </Text>
-                <Text style={ styles.detail }>{ updatedFields.occassion }</Text>
-                </>
-                : <Text>Occassion not selected</Text>
-              }
-            </Text>
-            <Text style={ styles.text }>
-              <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
-              { updatedFields.season ?
-                <>
-                <Text style={ styles.title }>Season: </Text>
-                <Text style={ styles.detail }>{ updatedFields.season }</Text>
-                </>
-                : <Text>Season not selected</Text>
-              }
-            </Text>
-            <Text style={ styles.text }>
-              <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
-              { updatedFields.color ?
-                <>
-                <Text style={ styles.title }>Color: </Text>
-                <Text style={ styles.detail }>{updatedFields.color}</Text>
-                </>
-                : <Text>Color not selected</Text>
-              }
-            </Text>
+            { Object.keys( updatedFields ).map( ( key, i) => {
+              return (
+                <Text style={ styles.text } key={ i.toString() } >
+                  <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
+                    { updatedFields[ key ] ?
+                      <>
+                        <Text style={ styles.title }>{key}:</Text>
+                        <Text style={ styles.detail }>{ updatedFields[ key ] }</Text>
+                      </>
+                      : <Text>{key} not selected</Text>
+                    }
+                </Text>
+              )
+            })}
           </View>
-            
             <TouchableOpacity
               style={ styles.button }
               onPress={ () => setEdit( true ) }
             >
               <Text style={ styles.buttonText }>Edit Item Details</Text>
             </TouchableOpacity>
-          </>
-        )}
         { loading && <Loading /> }
       </ScrollView>
     </View>

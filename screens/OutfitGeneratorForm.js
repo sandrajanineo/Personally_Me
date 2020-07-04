@@ -10,10 +10,10 @@ export default class OutfitGeneratorForm extends React.Component {
     super();
     this.state = {
       image: null,
-      occassion: '',
-      color: '',
-      season: '',
-      type: '',
+      Occassion: '',
+      Color: '',
+      Season: '',
+      Type: '',
     };
     this.updateState = this.updateState.bind(this);
   }
@@ -23,7 +23,6 @@ export default class OutfitGeneratorForm extends React.Component {
   }
 
   render() {
-      console.log(this.props);
     return (
       <ScrollView style={ styles.container }>
         <View style={ styles.formContainer }>
@@ -34,13 +33,13 @@ export default class OutfitGeneratorForm extends React.Component {
           />
 
           <TouchableOpacity
-            style={ this.state.type ? styles.button : styles.buttonDisabled }
+            style={ this.state.Type ? styles.button : styles.buttonDisabled }
             onPress={() => this.props.navigation.navigate('OutfitGenerator', {
-              type: this.state.type,
-              occassion: this.state.occassion,
-              season: this.state.season
+              Type: this.state.Type,
+              Occassion: this.state.Occassion,
+              Season: this.state.Season
             })}
-            disabled={ this.state.type ? false : true }
+            disabled={ this.state.Type ? false : true }
           >
             <Text style={ styles.buttonText }>Dress Me!</Text>
           </TouchableOpacity>

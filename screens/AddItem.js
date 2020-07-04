@@ -16,13 +16,13 @@ import Loading from '../components/Loading';
 
 export default AddItem = () => {
   let { userID, addItem, success, error, resetState } = React.useContext( GlobalContext );
-  let [ details, setDetails ] = React.useState({ image: null, occassion: '', color: '', season: '', type: '' });
+  let [ details, setDetails ] = React.useState({ image: null, Occassion: '', Color: '', Season: '', Type: '', Location: '' });
   let [ loading, setLoading ] = React.useState( false );
 
   React.useEffect(() => {
     if ( loading ) {
       setLoading( false );
-      setDetails({ image: null, occassion: '', color: '', season: '', type: '' });
+      setDetails({ image: null, Occassion: '', Color: '', Season: '', Type: '', Location: '' });
 
       if ( success ){
         Alert.alert('Item Added Successfully!');
@@ -57,12 +57,12 @@ export default AddItem = () => {
         <Form details={ details } updateState={ updateState } />
 
         <TouchableOpacity
-          style={ details.image && details.type ? styles.button : styles.buttonDisabled }
+          style={ details.image && details.Type ? styles.button : styles.buttonDisabled }
           onPress={() => {
             setLoading( true );
             addItem( userID, details );
           }}
-          disabled={ details.image && details.type ? false : true }
+          disabled={ details.image && details.Type ? false : true }
         >
           <Text style={ styles.buttonText }>Add to Closet</Text>
         </TouchableOpacity>
