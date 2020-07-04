@@ -14,7 +14,7 @@ const Form = (props) => {
       [ { category: 'Type', value: 'Bottoms' }, { category: 'Type', value: 'One Piece' }, { category: 'Type', value: 'Tops' } ],
     selected: details.Type || type,
     disable: disableType,
-    altLabel: `Type: ${details.type || type}`
+    altLabel: `Type: ${details.Type || type}`
   },{
     key: 1,
     label: "Select the Occassion ",
@@ -43,7 +43,7 @@ const Form = (props) => {
     selected: details.Location,
     disable: screen === 'OutfitGeneratorForm' ? true : false,
     altLabel: '',
-    selected: details.location
+    selected: details.Location
   }];
   
   return (
