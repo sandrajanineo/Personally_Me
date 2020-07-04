@@ -170,8 +170,8 @@ export default function globalContext (){
 
       updateItem: ( userID, docName, details ) => {
         Firebase.firestore()
-        .collection( userID ).doc( details.type )
-        .collection( details.type ).doc( docName )
+        .collection( userID ).doc( details.Type )
+        .collection( details.Type ).doc( docName )
         .update( details )
         .then( () => dispatch({ type: 'ITEM_ADDED', success: 1 }) )
         .catch( () => dispatch({ type: 'ITEM_ADDED', error: 1 }) )

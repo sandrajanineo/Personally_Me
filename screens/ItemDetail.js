@@ -5,12 +5,11 @@ import { Text, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-na
 import { GlobalContext } from '../hooks/global';
 import Form from '../components/Form';
 import Loading from '../components/Loading';
+import Edit from '../components/Edit';
 
 const ItemDetail = props => {
-  const { updateItem, userID, success, error, resetState } = React.useContext( GlobalContext );
+  const { success, error, resetState } = React.useContext( GlobalContext );
   const { item } = props.route.params;
-  delete item.image;
-  delete item.imageURL;
   let [ updatedFields, setFields ] = React.useState( item );
   let [ editMode, setEdit ] = React.useState( false );
   let [ loading, setLoading ] = React.useState( false );
@@ -43,7 +42,8 @@ const ItemDetail = props => {
     <View style={ styles.container }>
       <ScrollView>
         <Image source={{ uri: item.imageURL }} style={ styles.image } />
-          <View style={ styles.flexContainer }>
+        { !editMode ?
+          (<View style={ styles.flexContainer }>
             { Object.keys( updatedFields ).map( ( key, i) => {
               return (
                 <Text style={ styles.text } key={ i.toString() } >
@@ -58,13 +58,16 @@ const ItemDetail = props => {
                 </Text>
               )
             })}
-          </View>
             <TouchableOpacity
               style={ styles.button }
               onPress={ () => setEdit( true ) }
             >
               <Text style={ styles.buttonText }>Edit Item Details</Text>
             </TouchableOpacity>
+          </View>
+        ):(
+            <Edit updateState={updateState} updatedFields={updatedFields} setLoading={setLoading} />
+        )}
         { loading && <Loading /> }
       </ScrollView>
     </View>
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     margin: 30,
   },
   flexContainer: {
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   bulletPoint: {
     color: 'white',
@@ -116,7 +119,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     lineHeight: 20,
-    marginBottom: 5
+    marginBottom: 5,
+    paddingRight: '20%',
+    paddingLeft: '20%',
   },
   title: {
     color: 'white'
