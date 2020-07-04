@@ -12,7 +12,9 @@ const Form = (props) => {
       [ { category: 'type', value: 'One Piece' }, { category: 'type', value: 'Two Piece' } ] 
       :
       [ { category: 'type', value: 'Bottoms' }, { category: 'type', value: 'One Piece' }, { category: 'type', value: 'Tops' } ],
-    selected: details.type || type
+    selected: details.type || type,
+    disable: disableType,
+    altLabel: `Type: ${details.type || type}`
   },{
     key: 1,
     label: "Select the occassion ",
@@ -34,6 +36,13 @@ const Form = (props) => {
               { category: 'color', value: 'Orange' }, { category: 'color', value: 'Pink' }, { category: 'color', value: 'Red' },
               { category: 'color', value: 'Violet' }, { category: 'color', value: 'White' }, { category: 'color', value: 'Yellow' }],
     selected: details.color
+  }, {
+    key: 4,
+    label: "Select the location",
+    options: [ { category: 'location', value: 'Closet' }, { category: 'location', value: 'Under Bed' } ],
+    selected: details.location,
+    disable: screen === 'OutfitGeneratorForm' ? true : false,
+    altLabel: ''
   }];
   
   return (

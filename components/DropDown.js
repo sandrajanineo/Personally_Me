@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, FlatList, VirtualizedList} from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableOpacity, FlatList, TouchableWithoutFeedback} from 'react-native';
 import TabBarIcon from './TabBarIcon';
 
 export default DropDown = (props) => {
@@ -9,9 +9,12 @@ export default DropDown = (props) => {
   return (
     <View>
       {data.map( section => (
-        section.key === 0 && disableType ? (
+        section.disable ? (
         <View key={section.key} style={styles.container}>
-          <Text key={section.key} style={styles.typeText} >Type: {section.selected}</Text>
+        { section.altLabel ?
+          <Text key={section.key} style={styles.typeText} >{section.altLabel}</Text>
+          : <Text></Text>
+        }
         </View>
         ) : (
         <View key={section.key} style={styles.container}>
@@ -28,30 +31,36 @@ export default DropDown = (props) => {
         </View>
         )))}
       <Modal visible={modalVisible.show} transparent={true} >
-        <View style={styles.modalView}>
-          <TouchableOpacity
-            style={styles.closeModal}
-            onPress={ () => setModalVisible({ show: false, active: null }) }
-          >
-          <TabBarIcon name="md-close-circle" style={styles.close}/>
-          </TouchableOpacity>
-          <FlatList
-            data={modalVisible.show ? data[modalVisible.active]['options'] : []}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.modalTouch}
-                onPress={ () => {
-                  updateState(item.category, item.value);
-                  setModalVisible({ show: false, active: null });
-                }}
-              >
-                <Text style={styles.modalText}>{item.value}</Text>
-              </TouchableOpacity>
-            )}
-            keyExtractor={ (item, index) => index.toString() }
-            style={styles.list}
-          />
-        </View>
+        <TouchableWithoutFeedback onPress={() => setModalVisible({ show: false, active: null })} >
+          <View style={styles.modal} >
+            <View style={styles.modalView}>
+              <View>
+                <TouchableOpacity
+                  style={styles.closeModal}
+                  onPress={ () => setModalVisible({ show: false, active: null }) }
+                >
+                <TabBarIcon name="md-close-circle" style={styles.close}/>
+                </TouchableOpacity>
+              </View>
+              <FlatList
+                data={modalVisible.show ? data[modalVisible.active]['options'] : []}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.modalTouch}
+                    onPress={ () => {
+                      updateState(item.category, item.value);
+                      setModalVisible({ show: false, active: null });
+                    }}
+                  >
+                    <Text style={styles.modalText}>{item.value}</Text>
+                  </TouchableOpacity>
+                )}
+                keyExtractor={ (item, index) => index.toString() }
+                style={styles.list}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
@@ -92,8 +101,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: "white",
     alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10,
+    padding: 5,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -103,6 +111,10 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     position: "absolute",
     bottom: 0,
+    width: '100%',
+  },
+  modal: {
+    height: '100%',
     width: '100%',
   },
   modalText: {
@@ -124,17 +136,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   list: {
-    width: '90%',
+    width: '100%',
     borderColor: 'gray',
     borderWidth: 1,
     borderBottomWidth: 0,
-    marginRight: 30
   },
   closeModal: {
-    position: 'absolute',
-    right: 0,
-    padding: 10,
-    paddingRight: 10
+    right: -175,
+    paddingBottom: 5,
   },
   close: {
     fontSize: 20,
