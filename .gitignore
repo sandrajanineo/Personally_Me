@@ -13,3 +13,4 @@ web-build/
 .DS_Store
 
 *dbConfig.js
+*cloudAPIConfig.js

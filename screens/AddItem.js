@@ -9,15 +9,17 @@ import {
   Alert,
 } from 'react-native';
 
-import PickImage from '../components/PickImage';
-import Form from '../components/Form';
 import { GlobalContext } from '../hooks/global';
+import PickImage from '../components/PickImage';
+import CloudVision from '../components/CloudVision';
 import Loading from '../components/Loading';
+import Edit from '../components/Edit';
 
-export default AddItem = () => {
-  let { userID, addItem, success, error, resetState } = React.useContext( GlobalContext );
+export default AddItem = props => {
+  let { success, error, resetState, displayGoogle, collection, imageDetails } = React.useContext( GlobalContext );
   let [ details, setDetails ] = React.useState({ image: null, Occassion: '', Color: '', Season: '', Type: '', Location: '' });
   let [ loading, setLoading ] = React.useState( false );
+  let [ edit, setEdit ] = React.useState( false );
 
   React.useEffect(() => {
     if ( loading ) {
@@ -26,6 +28,7 @@ export default AddItem = () => {
 
       if ( success ){
         Alert.alert('Item Added Successfully!');
+        props.navigation.navigate('Collection', { collection })
       }
       if ( error ){
         Alert.alert('An unexpected error occured. Please try again.');
@@ -48,26 +51,16 @@ export default AddItem = () => {
       <View style={ styles.formContainer }>
         <Text style={ styles.headerText }>Add To Your Collection!</Text>
 
-        <PickImage image={ details.image } addImage={ updateState } />
+        <PickImage image={ details.image } setLoading={ setLoading } />
 
         {details.image && (
           <Image source={{ uri: details.image }} style={ styles.image } />
         )}
 
-        <Form details={ details } updateState={ updateState } />
+        { displayGoogle && <CloudVision image={ details.image } setLoading={ setLoading } setEdit={ setEdit } /> }
 
-        <TouchableOpacity
-          style={ details.image && details.Type ? styles.button : styles.buttonDisabled }
-          onPress={() => {
-            setLoading( true );
-            addItem( userID, details );
-          }}
-          disabled={ details.image && details.Type ? false : true }
-        >
-          <Text style={ styles.buttonText }>Add to Closet</Text>
-        </TouchableOpacity>
-
-        {loading && <Loading /> }
+        { loading && <Loading /> }
+        { edit && <Edit updateState={ updateState } setLoading={ setLoading } updatedFields={ imageDetails } /> }
       </View>
     </ScrollView>
   );

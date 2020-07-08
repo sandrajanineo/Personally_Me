@@ -14,7 +14,7 @@ export default function Edit ( props ) {
           style={ styles.button }
           onPress={ () => {
             setLoading( true );
-            updateItem( userID, updatedFields.image, updatedFields );
+            updateItem( userID, updatedFields.imageName, updatedFields );
           }}
         >
           <Text style={ styles.buttonText }>Save</Text>

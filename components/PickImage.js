@@ -1,9 +1,12 @@
 import * as React from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Button, Alert, StyleSheet, View } from 'react-native';
+import { Button, Alert, StyleSheet, View, TouchableOpacity } from 'react-native';
 import * as Linking from 'expo-linking';
 
+import { GlobalContext } from '../hooks/global';
+
 export default function PickImage ( props ) {
+  let { analyzeImage } = React.useContext( GlobalContext );
 
   React.useEffect(() => {
     (async () => {
@@ -32,7 +35,8 @@ export default function PickImage ( props ) {
     });
 
     if (!result.cancelled) {
-      props.addImage( 'image', result.uri );
+      props.setLoading( true );
+      analyzeImage( result.uri );
     }
   }
 

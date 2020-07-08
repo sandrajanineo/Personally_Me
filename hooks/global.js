@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Firebase from '../dbConfig';
 import AsyncStorage from '@react-native-community/async-storage';
+import config from '../cloudAPIConfig';
 
 export const GlobalContext = React.createContext();
 
@@ -55,11 +56,18 @@ export default function globalContext (){
             outfit: action.outfit,
             outfitReady: true
           }
-        case 'ITEM_ADDED':
-          let outcome = action.error ? 'error' : 'success';
+        case 'IMAGE_ANALYZED':
           return {
             ...prevState,
-            [ outcome ]: action[outcome]
+            imageDetails: action.imageDetails,
+            displayGoogle: true,
+          }
+        case 'ITEM_ADDED':
+          let outcome = action.outcome.error ? 'error' : 'success';
+          return {
+            ...prevState,
+            [ outcome ]: action.outcome[outcome],
+            collection: action.outcome.collection
           }
         case 'RESET_STATE':
           let key = action.key;
@@ -93,6 +101,9 @@ export default function globalContext (){
       success: null,
       filtersApplied: {},
       filterActive: null,
+      imageDetails: {},
+      displayGoogle: false,
+      collection: null,
     }
   );
 
@@ -152,29 +163,46 @@ export default function globalContext (){
         dispatch({ type: 'APPLY_FILTERS', filters })
       },
 
-      addItem: async ( userID, details ) => {
+      analyzeImage: async image => {
         let date = new Date();
         let imageName = "img" + Math.random().toString(36).slice(2) + date.getHours().toString(36);
-        let imageURL = await createImageBLOB(details.image, imageName);
-        details.imageURL = imageURL;
-        details.image = imageName;
+        let imageURL = await createImageBLOB(image, imageName);
+        let imageDetails = await submitToGoogle( imageURL );
+        imageDetails.imageURL = imageURL;
+        imageDetails.imageName = imageName;
+        dispatch({ type: 'IMAGE_ANALYZED',  imageDetails });
+      },
+
+      addItem: async ( userID, details ) => {
+        let outcome;
         Firebase.firestore()
-        .collection(userID).doc(details.Type).set({ Type: details.Type })
+        .collection(userID).doc(details.type).set({ Type: details.type })
         .then( () => {
-          let docRef = Firebase.firestore().collection(userID).doc(details.Type)
-          docRef.collection(details.Type).doc(imageName).set(details);
-          dispatch({ type: 'ITEM_ADDED', success: 1 });
+          let docRef = Firebase.firestore().collection(userID).doc(details.type)
+          docRef.collection(details.type).doc(details.imageName).set(details);
+          outcome = { success: 1, collection: details.type }
+          dispatch({ type: 'ITEM_ADDED', outcome });
         })
-        .catch( () => dispatch({ type: 'ITEM_ADDED', error: 1 }) );
+        .catch( () => {
+          outcome = { error: 1, collection: null };
+          dispatch({ type: 'ITEM_ADDED', outcome })
+        });
       },
 
       updateItem: ( userID, docName, details ) => {
+        let outcome;
         Firebase.firestore()
-        .collection( userID ).doc( details.Type )
-        .collection( details.Type ).doc( docName )
+        .collection( userID ).doc( details.type )
+        .collection( details.type ).doc( docName )
         .update( details )
-        .then( () => dispatch({ type: 'ITEM_ADDED', success: 1 }) )
-        .catch( () => dispatch({ type: 'ITEM_ADDED', error: 1 }) )
+        .then( () => {
+          outcome = { success: 1, collection: details.type }
+          dispatch({ type: 'ITEM_ADDED', outcome })
+        })
+        .catch( () => {
+          outcome = { error: 1, collection: null }
+          dispatch({ type: 'ITEM_ADDED', outcome })
+        })
       },
 
       deleteItem: (userID, item) => {
@@ -278,4 +306,166 @@ const storeUser = async (userID) => {
   catch (err) {
     console.log('error storing userID');
   }
+}
+
+
+const submitToGoogle = async ( imageURL ) => {
+  try {
+    let body = JSON.stringify({
+       requests: [
+         {
+           features: [
+             { type: "LABEL_DETECTION", maxResults: 10 },
+             { type: "LOGO_DETECTION", maxResults: 5 },
+             { type: "IMAGE_PROPERTIES", maxResults: 5 },
+             { type: "WEB_DETECTION", maxResults: 5 }
+           ],
+           image: {
+             source: {
+               imageUri: imageURL
+             }
+           }
+         }
+       ]
+     });
+
+    let res = await fetch(
+      "https://vision.googleapis.com/v1/images:annotate?key=" + config["GOOGLE_CLOUD_VISION_API_KEY"],
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: body
+      }
+    );
+
+    let resJSON = await res.json();
+    return analyzeGoogle( resJSON.responses[0] );
+
+  } catch ( error ) {
+    console.log('error submitting to google: ', error);
+  }
+}
+
+const analyzeGoogle = imageDetails => {
+  const keywords = {
+    Tops: [ "blouse", "cardigan", "collar", "hood", "hoodie", "jacket", "jersey", "shirt", "sleeveless shirt", "sweater", "sweatshirt", "t-shirt", "top" ],
+    Bottoms: [ "jean", "legging", "pant", "short", "skort", "sweatpant", "trouser" ],
+    "One Piece": [ "dress", "jumpsuit", "overall", "romper", "gown" ]
+  };
+
+  let type = '';
+  const labels = imageDetails.labelAnnotations;
+  for (let i = 0; i < Object.keys( keywords ).length; i++ ){
+    let key = Object.keys( keywords )[i];
+    let keywordsArr = keywords[ key ];
+    for ( let j = 0; j < labels.length; j++ ){
+      let term = labels[ j ].description.toLowerCase();
+      if ( keywordsArr.includes( term ) ){
+        type = key;
+        break;
+      }
+      let regex = new RegExp( `\w*\s*${term}[s]*\s`, 'i' );
+      for ( let k = 0; k < keywordsArr.length; k++ ){
+        if ( regex.test( keywordsArr[ k ] ) ){
+          type = key;
+          break;
+        }
+      }
+      if ( type ) break;
+    }
+
+    if ( type ) break;
+  }
+
+  const { colors } = imageDetails.imagePropertiesAnnotation.dominantColors;
+  const colorMatch = convertColor( colors[0] );
+
+  return { type, color: colorMatch }
+}
+
+const convertColor = color => {
+  // credit to https://css-tricks.com/converting-color-spaces-in-javascript/
+  // Make r, g, and b fractions of 1
+  let r = color.color.red / 255,
+  g = color.color.green / 255,
+  b = color.color.blue / 255;
+
+  // Find greatest and smallest channel values
+  let cmin = Math.min(r,g,b),
+      cmax = Math.max(r,g,b),
+      delta = cmax - cmin,
+      h = 0,
+      s = 0,
+      l = 0;
+
+  if (delta == 0){
+    h = 0;
+    // Red is max
+  }
+  else if (cmax == r){
+    h = ((g - b) / delta) % 6;
+    // Green is max
+  }
+  else if (cmax == g){
+    h = (b - r) / delta + 2;
+  // Blue is max
+  }
+  else {
+    h = (r - g) / delta + 4;
+  }
+
+  h = Math.round(h * 60);
+
+  // Make negative hues positive behind 360°
+  if (h < 0) h += 360;
+
+  // Calculate lightness
+  l = (cmax + cmin) / 2;
+
+  // Calculate saturation
+  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  // Multiply l and s by 100
+  s = +(s * 100).toFixed(1);
+  l = +(l * 100).toFixed(1);
+
+  return classifyColor( h, s, l );
+}
+
+const classifyColor = ( h, s, l ) => {
+  if ( s <= 10 && l >=90 ) {
+    return 'White';
+  }
+  else if ( l < 25 ) {
+    return 'Black';
+  }
+  else if ( (s <= 10 && l < 95) ) {
+    return 'Gray';
+  }
+  else if ( h <= 15 && h > 335 ){
+    return 'Red';
+  }
+  else if ( h >= 16 && h <= 54 ) {
+    if ( s > 65 && l < 45 ) return 'Brown';
+    else return 'Orange'
+  }
+  else if ( h >= 55 && h <= 74 ) {
+    return 'Yellow';
+  }
+  else if ( h >= 75 && h <= 164 ) {
+    return 'Green';
+  }
+  else if ( h >= 165 && h <= 260 ) {
+    return 'Blue';
+  }
+  else if (h >= 261 && h <= 295) {
+    return 'Purple';
+  }
+  else if (h >= 296 && h <= 335) {
+    return 'Pink';
+  }
+  else return 'Pick a color';
 }
