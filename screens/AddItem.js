@@ -72,9 +72,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#48D1CC',
     paddingTop: 15,
+    padding: 10
   },
   headerText: {
-    marginBottom: 30,
+    marginBottom: 10,
     color: 'white',
     fontSize: 25,
     lineHeight: 30,
@@ -86,10 +87,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 10,
     marginBottom: 20,
-    alignItems: 'center',
     marginHorizontal: 50,
     borderWidth: 2,
     borderColor: 'white',
+    width: '100%',
+    alignSelf: 'center',
   },
   formOptions: {
     height: 200,
