@@ -42,7 +42,10 @@ export default function PickImage ( props ) {
 
   return (
     <View style={styles.container} >
-      <Button title="Select an image *" onPress={pickImage} />
+      <Button title="Select an image *" onPress={ event => {
+        props.setLocationY( event.nativeEvent.locationY + 20 );
+        pickImage()
+      }} />
     </View>
   )
 }

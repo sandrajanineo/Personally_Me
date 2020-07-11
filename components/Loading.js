@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
-export default Loading = () => {
+export default Loading = props => {
+  let locationY = props.locationY - 10 || 0;
+
   return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" style={styles.activityLoader} />
-      </View>
+    <View style={[ styles.container, { top: locationY } ]}>
+      <ActivityIndicator size="large" color="#0000ff" style={styles.activityLoader} />
+    </View>
   );
 }
 
@@ -14,7 +16,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 520,
     alignItems: 'center',
     justifyContent: 'center',
   },

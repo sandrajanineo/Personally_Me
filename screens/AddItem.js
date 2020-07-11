@@ -20,6 +20,7 @@ export default AddItem = props => {
   let [ details, setDetails ] = React.useState({ image: null, Occassion: '', Color: '', Season: '', Type: '', Location: '' });
   let [ loading, setLoading ] = React.useState( false );
   let [ edit, setEdit ] = React.useState( false );
+  let [ locationY, setLocationY ] = React.useState( null );
 
   React.useEffect(() => {
     if ( loading ) {
@@ -51,7 +52,7 @@ export default AddItem = props => {
       <View style={ styles.formContainer }>
         <Text style={ styles.headerText }>Add To Your Collection!</Text>
 
-        <PickImage image={ details.image } setLoading={ setLoading } />
+        <PickImage image={ details.image } setLoading={ setLoading } setLocationY={ setLocationY } />
 
         {details.image && (
           <Image source={{ uri: details.image }} style={ styles.image } />
@@ -59,7 +60,7 @@ export default AddItem = props => {
 
         { displayGoogle && <CloudVision image={ details.image } setLoading={ setLoading } setEdit={ setEdit } /> }
 
-        { loading && <Loading /> }
+        { loading && <Loading locationY={ locationY } /> }
         { edit && <Edit updateState={ updateState } setLoading={ setLoading } updatedFields={ imageDetails } /> }
       </View>
     </ScrollView>
