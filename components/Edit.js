@@ -5,16 +5,25 @@ import Form from './Form';
 import { GlobalContext } from '../hooks/global';
 
 export default function Edit ( props ) {
-  const { updateItem, userID } = React.useContext( GlobalContext );
-  const { updateState, updatedFields, setLoading } = props;
+  const { updateItem, userID, imageDetails, addItem } = React.useContext( GlobalContext );
+  const { setLoading, disableType, add } = props;
+  let [ details, setDetails ] = React.useState( {...imageDetails} );
+
+  const updateState = ( key, val ) => {
+    setDetails({
+      ...details,
+      [key]: val
+    });
+  }
+
   return (
     <View style={ styles.form }>
-      <Form updateState={ updateState } details={ updatedFields } disableType={ true } />
+      <Form updateState={ updateState } details={ details } disableType={ disableType } />
         <TouchableOpacity
           style={ styles.button }
           onPress={ () => {
             setLoading( true );
-            updateItem( userID, updatedFields.imageName, updatedFields );
+            add ? addItem( userID, details ) : updateItem( userID, details );
           }}
         >
           <Text style={ styles.buttonText }>Save</Text>

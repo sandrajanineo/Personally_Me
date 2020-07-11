@@ -4,7 +4,6 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   Alert,
 } from 'react-native';
@@ -17,7 +16,6 @@ import Edit from '../components/Edit';
 
 export default AddItem = props => {
   let { success, error, resetState, displayGoogle, collection, imageDetails } = React.useContext( GlobalContext );
-  let [ details, setDetails ] = React.useState({ image: null, Occassion: '', Color: '', Season: '', Type: '', Location: '' });
   let [ loading, setLoading ] = React.useState( false );
   let [ edit, setEdit ] = React.useState( false );
   let [ locationY, setLocationY ] = React.useState( null );
@@ -25,7 +23,6 @@ export default AddItem = props => {
   React.useEffect(() => {
     if ( loading ) {
       setLoading( false );
-      setDetails({ image: null, Occassion: '', Color: '', Season: '', Type: '', Location: '' });
 
       if ( success ){
         Alert.alert('Item Added Successfully!');
@@ -38,30 +35,23 @@ export default AddItem = props => {
       resetState( success ? 'success' : 'error' );
     }
 
-  }, [ success, error ]);
-
-  const updateState = ( key, val ) => {
-    setDetails({
-      ...details,
-      [key]: val
-    });
-  }
+  }, [ success, error, displayGoogle ]);
 
   return (
     <ScrollView style={ styles.container }>
       <View style={ styles.formContainer }>
         <Text style={ styles.headerText }>Add To Your Collection!</Text>
 
-        <PickImage image={ details.image } setLoading={ setLoading } setLocationY={ setLocationY } />
+        <PickImage setLoading={ setLoading } setLocationY={ setLocationY } />
 
-        {details.image && (
-          <Image source={{ uri: details.image }} style={ styles.image } />
+        {imageDetails.imageURL && (
+          <Image source={{ uri: imageDetails.imageURL }} style={ styles.image } />
         )}
 
-        { displayGoogle && <CloudVision image={ details.image } setLoading={ setLoading } setEdit={ setEdit } /> }
+        { displayGoogle && <CloudVision image={ imageDetails.imageURL } setLoading={ setLoading } setEdit={ setEdit } /> }
 
         { loading && <Loading locationY={ locationY } /> }
-        { edit && <Edit updateState={ updateState } setLoading={ setLoading } updatedFields={ imageDetails } /> }
+        { edit && <Edit setLoading={ setLoading } disableType={ false } add={ true } /> }
       </View>
     </ScrollView>
   );

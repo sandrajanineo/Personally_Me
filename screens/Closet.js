@@ -8,7 +8,7 @@ export default function Closet ( {navigation} ) {
     <View style={styles.container}>
       <ScrollView>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Collection', { collection: 'Tops' })}
+          onPress={() => navigation.navigate('Collection', { collection: 'Top' })}
           style={styles.imageDiv}
         >
           <Image

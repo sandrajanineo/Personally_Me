@@ -176,11 +176,11 @@ export default function globalContext (){
       addItem: async ( userID, details ) => {
         let outcome;
         Firebase.firestore()
-        .collection(userID).doc(details.type).set({ Type: details.type })
+        .collection(userID).doc(details.Type).set({ Type: details.Type })
         .then( () => {
-          let docRef = Firebase.firestore().collection(userID).doc(details.type)
-          docRef.collection(details.type).doc(details.imageName).set(details);
-          outcome = { success: 1, collection: details.type }
+          let docRef = Firebase.firestore().collection(userID).doc(details.Type)
+          docRef.collection(details.Type).doc(details.imageName).set(details);
+          outcome = { success: 1, collection: details.Type }
           dispatch({ type: 'ITEM_ADDED', outcome });
         })
         .catch( () => {
@@ -189,14 +189,14 @@ export default function globalContext (){
         });
       },
 
-      updateItem: ( userID, docName, details ) => {
+      updateItem: ( userID, details ) => {
         let outcome;
         Firebase.firestore()
-        .collection( userID ).doc( details.type )
-        .collection( details.type ).doc( docName )
+        .collection( userID ).doc( details.Type )
+        .collection( details.Type ).doc( details.imageName )
         .update( details )
         .then( () => {
-          outcome = { success: 1, collection: details.type }
+          outcome = { success: 1, collection: details.Type }
           dispatch({ type: 'ITEM_ADDED', outcome })
         })
         .catch( () => {
@@ -207,8 +207,8 @@ export default function globalContext (){
 
       deleteItem: (userID, item) => {
         Firebase.firestore()
-        .collection(userID).doc(item.type)
-        .collection(item.type).doc(item.imageName)
+        .collection(userID).doc(item.Type)
+        .collection(item.Type).doc(item.imageName)
         .delete()
         .then( () => console.log('item deleted'))
         .catch( error => console.log('error deleting item: ', error) )
@@ -383,7 +383,7 @@ const analyzeGoogle = imageDetails => {
   const { colors } = imageDetails.imagePropertiesAnnotation.dominantColors;
   const colorMatch = convertColor( colors[0] );
 
-  return { type, color: colorMatch }
+  return { Type: type, Color: colorMatch }
 }
 
 const convertColor = color => {

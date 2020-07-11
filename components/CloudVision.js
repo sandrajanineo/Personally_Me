@@ -8,9 +8,9 @@ export default CloudVision = props => {
   return (
     <View style={ styles.container }>
       <Text style={ styles.text }>Our fashion experts suggest that you are adding</Text>
-      { imageDetails.type === 'Bottoms' ?
-        <Text style={ styles.highlight }>{ imageDetails.color } { imageDetails.type }</Text>
-        : <Text style={ styles.highlight }>a { imageDetails.color } { imageDetails.type }</Text>
+      { imageDetails.Type === 'Bottoms' ?
+        <Text style={ styles.highlight }>{ imageDetails.Color } { imageDetails.Type }</Text>
+        : <Text style={ styles.highlight }>a { imageDetails.Color } { imageDetails.Type }</Text>
       }
       <Text style={ styles.smallText }>** Choose to Edit Details if you desire to add additional meta data</Text>
       <View style={ styles.flex }>
