@@ -351,7 +351,7 @@ const submitToGoogle = async ( imageURL ) => {
 
 const analyzeGoogle = imageDetails => {
   const keywords = {
-    Tops: [ "blouse", "cardigan", "collar", "hood", "hoodie", "jacket", "jersey", "shirt", "sleeveless shirt", "sweater", "sweatshirt", "t-shirt", "top" ],
+    Top: [ "blouse", "cardigan", "collar", "hood", "hoodie", "jacket", "jersey", "shirt", "sleeveless shirt", "sweater", "sweatshirt", "t-shirt", "top" ],
     Bottoms: [ "jean", "legging", "pant", "short", "skort", "sweatpant", "trouser" ],
     "One Piece": [ "dress", "jumpsuit", "overall", "romper", "gown" ]
   };
@@ -445,15 +445,21 @@ const classifyColor = ( h, s, l ) => {
   else if ( (s <= 10 && l < 95) ) {
     return 'Gray';
   }
-  else if ( h <= 15 && h > 335 ){
+  else if ( h <= 15 && h >= 345 ){
     return 'Red';
   }
-  else if ( h >= 16 && h <= 54 ) {
-    if ( s > 65 && l < 45 ) return 'Brown';
-    else return 'Orange'
-  }
-  else if ( h >= 55 && h <= 74 ) {
-    return 'Yellow';
+  else if ( h >= 16 && h < 35 ) {
+    if ( s < 90 && l < 40 ) {
+        return ("Brown");
+    } else {
+        return ("Orange");
+    }
+  } else if ( h >= 35 && h <= 74 ) {
+    if ( s < 90 && l < 40 ) {
+        return ("Brown");
+    } else {
+        return ("Yellow");
+    }
   }
   else if ( h >= 75 && h <= 164 ) {
     return 'Green';
@@ -464,7 +470,7 @@ const classifyColor = ( h, s, l ) => {
   else if (h >= 261 && h <= 295) {
     return 'Purple';
   }
-  else if (h >= 296 && h <= 335) {
+  else if (h >= 296 && h < 345) {
     return 'Pink';
   }
   else return 'Pick a color';
