@@ -12,7 +12,7 @@ export default CloudVision = props => {
         <Text style={ styles.highlight }>{ imageDetails.color } { imageDetails.type }</Text>
         : <Text style={ styles.highlight }>a { imageDetails.color } { imageDetails.type }</Text>
       }
-      <Text style={ styles.smallText }>** Chose to Edit Details if you desire to add additional meta data</Text>
+      <Text style={ styles.smallText }>** Choose to Edit Details if you desire to add additional meta data</Text>
       <View style={ styles.flex }>
         <TouchableOpacity
           style={ styles.button }
