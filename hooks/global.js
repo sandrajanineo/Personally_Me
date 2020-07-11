@@ -207,8 +207,8 @@ export default function globalContext (){
 
       deleteItem: (userID, item) => {
         Firebase.firestore()
-        .collection(userID).doc(item.Type)
-        .collection(item.Type).doc(item.image)
+        .collection(userID).doc(item.type)
+        .collection(item.type).doc(item.imageName)
         .delete()
         .then( () => console.log('item deleted'))
         .catch( error => console.log('error deleting item: ', error) )
