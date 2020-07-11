@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   smallText: {
     textAlign: 'center',
     fontSize: 12,
-    marginTop: 5,
+    marginTop: 15,
   },
   highlight: {
     textAlign: 'center',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     borderWidth: 10,
     marginTop: 10,
     margin: 5,
-    width: 120,
+    width: 160,
   },
   buttonText: {
     fontSize: 15,
