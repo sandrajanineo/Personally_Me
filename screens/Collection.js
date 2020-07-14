@@ -14,7 +14,7 @@ export default Collection = props => {
 
   React.useEffect(() => {
     return state.fetchCollection( state.userID, collection, state.filtersApplied );
-  }, [ state.filterActive ] );
+  }, [ state.filterActive, collection ] );
 
   const removeItem = ( item ) => {
     Alert.alert(
