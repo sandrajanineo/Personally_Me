@@ -15,8 +15,8 @@ export default function ProductsStackScreen(props) {
     <ProductsStack.Navigator>
       <ProductsStack.Screen name="Closet" component={Closet} />
       <ProductsStack.Screen name="Collection" component={Collection} />
-      <ProductsStack.Screen name="ItemDetail" component={ItemDetail} />
-      <ProductsStack.Screen name="AddItem" component={AddItem}
+      <ProductsStack.Screen name="Item Detail" component={ItemDetail} />
+      <ProductsStack.Screen name="Add Item" component={AddItem}
         options={{
           headerLeft: props => (
             <HeaderBackButton

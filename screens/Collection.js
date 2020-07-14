@@ -37,7 +37,7 @@ export default Collection = props => {
       <View style={styles.topContainer} >
         <TouchableOpacity
           style={styles.button}
-          onPress={() => props.navigation.navigate('AddItem')}
+          onPress={() => props.navigation.navigate('Add Item')}
         >
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
@@ -75,7 +75,7 @@ export default Collection = props => {
             return (
               <View style={styles.imageContainer} key={i} >
                 <TouchableOpacity
-                  onPress={() => props.navigation.navigate('ItemDetail', { item })}
+                  onPress={() => props.navigation.navigate('Item Detail', { item })}
                 >
                     <Image source={{ uri: item.imageURL }} style={styles.image} />
                 </TouchableOpacity>
