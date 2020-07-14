@@ -74,14 +74,15 @@ export default Collection = props => {
           {state.closet.map((item, i) => {
             return (
               <View style={styles.imageContainer} key={i} >
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate('Item Detail', { item })}
-                >
-                    <Image source={{ uri: item.imageURL }} style={styles.image} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconContainer} onPress={() => removeItem( item )} >
-                  <TabBarIcon name="md-trash" style={styles.icon} />
-                </TouchableOpacity>
+                <Image source={{ uri: item.imageURL }} style={styles.image} />
+                <View style={styles.iconContainer}>
+                  <TouchableOpacity onPress={() => removeItem( item )} >
+                    <TabBarIcon name="md-trash" style={styles.icon} size={40} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => props.navigation.navigate('Item Detail', { item })} >
+                    <TabBarIcon name="md-create" style={styles.icon} size={40} />
+                  </TouchableOpacity>
+                </View>
               </View>
             );
           })}
@@ -132,9 +133,9 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   image: {
-    width: 300,
-    height: 200,
-    resizeMode: 'center',
+    width: 250,
+    height: 250,
+    resizeMode: 'stretch',
     marginTop: 3,
   },
   button: {
@@ -157,8 +158,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     position: 'absolute',
-    right: 30,
-    top: -10,
+    right: 20,
   },
   removeFilter: {
     color: 'white',
