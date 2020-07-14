@@ -46,6 +46,9 @@ const ItemDetail = props => {
           (<View style={ styles.flexContainer }>
             { Object.keys( updatedFields ).map( ( key, i) => {
               return (
+                key === 'imageName' || key === 'imageURL' ?
+                <Text style={styles.noDisplay} key={ i.toString() }></Text>
+                :
                 <Text style={ styles.text } key={ i.toString() } >
                   <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
                     { updatedFields[ key ] ?
@@ -128,5 +131,8 @@ const styles = StyleSheet.create({
   },
   detail: {
     color: 'navy'
+  },
+  noDisplay: {
+    display: 'none'
   },
 });
