@@ -67,7 +67,8 @@ export default function globalContext (){
           return {
             ...prevState,
             [ outcome ]: action.outcome[outcome],
-            collection: action.outcome.collection
+            collection: action.outcome.collection,
+            displayGoogle: false,
           }
         case 'RESET_STATE':
           let key = action.key;
@@ -76,7 +77,12 @@ export default function globalContext (){
           if ( key === 'filtersApplied') {
             val = {};
             filter = null;
-          } else {
+          }
+          else if ( key === 'displayGoogle' ){
+            val = false;
+            filter = null;
+          }
+          else {
             val = null;
             filter = prevState.filterActive
           }

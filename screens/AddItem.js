@@ -44,7 +44,7 @@ export default AddItem = props => {
 
         <PickImage setLoading={ setLoading } setLocationY={ setLocationY } />
 
-        {imageDetails.imageURL && (
+        { imageDetails.imageURL && displayGoogle && (
           <Image source={{ uri: imageDetails.imageURL }} style={ styles.image } />
         )}
 
