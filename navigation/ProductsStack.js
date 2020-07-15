@@ -14,7 +14,13 @@ export default function ProductsStackScreen(props) {
   return (
     <ProductsStack.Navigator>
       <ProductsStack.Screen name="Closet" component={Closet} />
-      <ProductsStack.Screen name="Collection" component={Collection} />
+      <ProductsStack.Screen name="Collection" component={Collection}
+        options={ ({ route }) => {
+          return ({
+            title: route.params.collection === 'Top' ? 'Tops' : route.params.collection,
+          })
+        }}
+      />
       <ProductsStack.Screen name="Item Detail" component={ItemDetail} />
       <ProductsStack.Screen name="Add Item" component={AddItem}
         options={{
