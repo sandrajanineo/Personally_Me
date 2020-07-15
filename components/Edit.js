@@ -6,8 +6,9 @@ import { GlobalContext } from '../hooks/global';
 
 export default function Edit ( props ) {
   const { updateItem, userID, imageDetails, addItem } = React.useContext( GlobalContext );
-  const { setLoading, disableType, add } = props;
-  let [ details, setDetails ] = React.useState( {...imageDetails} );
+  const { setLoading, disableType, add, updatedFields } = props;
+  let fields = add ? imageDetails : updatedFields;
+  let [ details, setDetails ] = React.useState( {...fields} );
 
   const updateState = ( key, val ) => {
     setDetails({

@@ -26,7 +26,6 @@ const ItemDetail = props => {
       }
 
       resetState( success ? 'success' : 'error' );
-      setEdit( false );
     }
 
   }, [ success, error ]);
@@ -42,35 +41,7 @@ const ItemDetail = props => {
     <View style={ styles.container }>
       <ScrollView>
         <Image source={{ uri: item.imageURL }} style={ styles.image } />
-        { !editMode ?
-          (<View style={ styles.flexContainer }>
-            { Object.keys( updatedFields ).map( ( key, i) => {
-              return (
-                key === 'imageName' || key === 'imageURL' ?
-                <Text style={styles.noDisplay} key={ i.toString() }></Text>
-                :
-                <Text style={ styles.text } key={ i.toString() } >
-                  <Text style={ styles.bulletPoint }>{'\u2022'}  </Text>
-                    { updatedFields[ key ] ?
-                      <>
-                        <Text style={ styles.title }>{key}:</Text>
-                        <Text style={ styles.detail }>{ updatedFields[ key ] }</Text>
-                      </>
-                      : <Text>{key} not selected</Text>
-                    }
-                </Text>
-              )
-            })}
-            <TouchableOpacity
-              style={ styles.button }
-              onPress={ () => setEdit( true ) }
-            >
-              <Text style={ styles.buttonText }>Edit Item Details</Text>
-            </TouchableOpacity>
-          </View>
-        ):(
-            <Edit updateState={updateState} updatedFields={updatedFields} setLoading={setLoading} />
-        )}
+        <Edit updateState={ updateState } updatedFields={ updatedFields } setLoading={ setLoading } disableType={ true } />
         { loading && <Loading /> }
       </ScrollView>
     </View>
@@ -87,12 +58,11 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   image: {
-    width: 300,
-    height: 200,
+    width: 250,
+    height: 250,
     resizeMode: 'contain',
     marginTop: 20,
     alignSelf: 'center',
-    marginBottom: 20
   },
   button: {
     color: '#0000CD',
