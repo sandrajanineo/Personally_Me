@@ -42,7 +42,7 @@ export default AddItem = props => {
       <View style={ styles.formContainer }>
         <Text style={ styles.headerText }>Add To Your Collection!</Text>
 
-        <PickImage setLoading={ setLoading } setLocationY={ setLocationY } />
+        { !displayGoogle && <PickImage setLoading={ setLoading } setLocationY={ setLocationY } /> }
 
         { imageDetails.imageURL && displayGoogle && (
           <Image source={{ uri: imageDetails.imageURL }} style={ styles.image } />
