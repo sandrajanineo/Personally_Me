@@ -362,18 +362,22 @@ const analyzeGoogle = imageDetails => {
     "One Piece": [ "dress", "jumpsuit", "overall", "romper", "gown" ]
   };
 
-  let type = '';
+  let type = '',
+      color = '';
+
   const labels = imageDetails.labelAnnotations;
   for (let i = 0; i < Object.keys( keywords ).length; i++ ){
     let key = Object.keys( keywords )[i];
     let keywordsArr = keywords[ key ];
     for ( let j = 0; j < labels.length; j++ ){
       let term = labels[ j ].description.toLowerCase();
+      if ( term[ term.length -1 ] === 's') term = term.slice(0,-1);
+      if ( term === 'jean' || term === 'denim') color = 'Denim';
       if ( keywordsArr.includes( term ) ){
         type = key;
         break;
       }
-      let regex = new RegExp( `\w*\s*${term}[s]*\s`, 'i' );
+      let regex = new RegExp( `\w*\s*${term}[s]*\s*`, 'i' );
       for ( let k = 0; k < keywordsArr.length; k++ ){
         if ( regex.test( keywordsArr[ k ] ) ){
           type = key;
@@ -386,10 +390,12 @@ const analyzeGoogle = imageDetails => {
     if ( type ) break;
   }
 
-  const { colors } = imageDetails.imagePropertiesAnnotation.dominantColors;
-  const colorMatch = convertColor( colors[0] );
+  if ( !color ){
+    const { colors } = imageDetails.imagePropertiesAnnotation.dominantColors;
+    color = convertColor( colors[0] );
+  }
 
-  return { Type: type, Color: colorMatch }
+  return { Type: type, Color: color }
 }
 
 const convertColor = color => {

@@ -34,7 +34,8 @@ const Form = (props) => {
     label: "Select the Color ",
     options: [ { category: 'Color', value: 'Black' }, { category: 'Color', value: 'Blue' }, { category: 'Color', value: 'Green' },
               { category: 'Color', value: 'Orange' }, { category: 'Color', value: 'Pink' }, { category: 'Color', value: 'Red' },
-              { category: 'Color', value: 'Violet' }, { category: 'Color', value: 'White' }, { category: 'Color', value: 'Yellow' }],
+              { category: 'Color', value: 'Violet' }, { category: 'Color', value: 'White' }, { category: 'Color', value: 'Yellow' },
+              { category: 'Color', value: 'Denim' } ],
     selected: details.Color
   }, {
     key: 4,
