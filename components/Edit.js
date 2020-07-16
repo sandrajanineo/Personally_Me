@@ -10,7 +10,20 @@ export default function Edit ( props ) {
   let fields = add ? imageDetails : updatedFields;
   let [ details, setDetails ] = React.useState( {...fields} );
 
-  const updateState = ( key, val ) => {
+  const updateState = ( action, key, val ) => {
+
+    if ( key === 'Color' ){
+      if ( action === 'remove'){
+        let colors = details.Color.filter ( color => color !== val );
+        val = colors;
+      } else {
+        let colors = details.Color;
+        let match = colors.filter( color => val === color );
+        if ( !match.length ) colors.push( val );
+        val = colors;
+      }
+    }
+
     setDetails({
       ...details,
       [key]: val

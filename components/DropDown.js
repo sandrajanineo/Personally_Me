@@ -20,14 +20,42 @@ export default DropDown = (props) => {
         <View key={section.key} style={styles.container}>
           <TouchableOpacity
             onPress={() => setModalVisible({ show: true, active: section.key })}
-            style={styles.label}
+            style={styles.flexRow}
           >
             <Text style={styles.textStyle}>{section.label}</Text>
             <TabBarIcon name="md-arrow-dropdown" style={styles.icon} />
           </TouchableOpacity>
-          <Text style={styles.selected}>
-            {section.selected ? `You selected: ${section.selected}` : ''}
-          </Text>
+
+          { section.key === 3 && section.selected.length ?
+              <View style={ styles.colorsContain }>
+                <Text style={ styles.selected }>You selected: </Text>
+                { section.selected.map( (color, i) => (
+                  <TouchableOpacity
+                    style={ styles.flexRow }
+                    onPress={() => updateState( 'remove', 'Color', color )}
+                    key={ i.toString() }
+                  >
+                    <TabBarIcon name="md-remove-circle" style={ styles.removeIcon }/>
+                    <Text style={ styles.selections }>{color}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            :
+              section.selected  && section.key !== 3 ?
+              <View>
+                <Text style={ styles.selected }>You selected: </Text>
+                  <TouchableOpacity
+                    style={ styles.flexRow }
+                    onPress={() => updateState( 'remove', section.category, '' )}
+                  >
+                    <TabBarIcon name="md-remove-circle" style={ styles.removeIcon }/>
+                    <Text style={ styles.selections }>{section.selected}</Text>
+                  </TouchableOpacity>
+              </View>
+              :
+                <Text style={ styles.noneSelected }></Text>
+          }
+
         </View>
         )))}
       <Modal visible={modalVisible.show} transparent={true} >
@@ -48,7 +76,7 @@ export default DropDown = (props) => {
                   <TouchableOpacity
                     style={styles.modalTouch}
                     onPress={ () => {
-                      updateState(item.category, item.value);
+                      updateState('add', item.category, item.value);
                       setModalVisible({ show: false, active: null });
                     }}
                   >
@@ -70,7 +98,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  label: {
+  flexRow: {
     display: 'flex',
     flexDirection: 'row',
   },
@@ -134,6 +162,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 10,
+    marginTop: 5,
   },
   list: {
     width: '100%',
@@ -148,5 +177,22 @@ const styles = StyleSheet.create({
   close: {
     fontSize: 20,
     color: 'gray',
+  },
+  noneSelected: {
+    display: 'none'
+  },
+  selections: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5
+  },
+  colorsContain: {
+    marginBottom: 10,
+  },
+  removeIcon: {
+    fontSize: 20,
+    color: 'gray',
+    marginRight: 5,
   },
 });
