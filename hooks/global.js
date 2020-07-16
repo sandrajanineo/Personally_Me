@@ -362,8 +362,11 @@ const analyzeGoogle = imageDetails => {
     "One Piece": [ "dress", "jumpsuit", "overall", "romper", "gown" ]
   };
 
+  const colors = [ 'black', 'gray', 'white', 'beige', 'red' , 'orange', 'yellow', 'brown', 'green', 'blue', 'purple', 'magenta', 'pink' ];
+
   let type = '',
-      color = '';
+      color = '',
+      pattern = false;
 
   const labels = imageDetails.labelAnnotations;
   for (let i = 0; i < Object.keys( keywords ).length; i++ ){
@@ -373,6 +376,8 @@ const analyzeGoogle = imageDetails => {
       let term = labels[ j ].description.toLowerCase();
       if ( term[ term.length -1 ] === 's') term = term.slice(0,-1);
       if ( term === 'jean' || term === 'denim') color = 'Denim';
+      if ( colors.includes( term ) && !color ) color = term;
+      if ( term === 'pattern' && !pattern ) pattern = true;
       if ( keywordsArr.includes( term ) ){
         type = key;
         break;
