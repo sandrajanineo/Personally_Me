@@ -357,50 +357,48 @@ const submitToGoogle = async ( imageURL ) => {
 
 const analyzeGoogle = imageDetails => {
   const keywords = {
-    Top: [ "blouse", "cardigan", "collar", "hood", "hoodie", "jacket", "jersey", "shirt", "sleeveless shirt", "sweater", "sweatshirt", "t-shirt", "top" ],
-    Bottoms: [ "jean", "legging", "pant", "short", "skort", "sweatpant", "trouser" ],
-    "One Piece": [ "dress", "jumpsuit", "overall", "romper", "gown" ]
+    Top: [ "Blouse", "Cardigan", "Collar", "Hood", "Hoodie", "Jacket", "Jersey", "Shirt", "Sleeveless Shirt", "Sweater", "Sweatshirt", "T-shirt", "Top" ],
+    Bottoms: [ "Leggings", "Pants", "Shorts", "Skort", "Sweatpants", "Trousers" ],
+    "One Piece": [ "Dress", "Jumpsuit", "Overall", "Romper", "Gown" ]
   };
 
-  const colors = [ 'black', 'gray', 'white', 'beige', 'red' , 'orange', 'yellow', 'brown', 'green', 'blue', 'purple', 'magenta', 'pink' ];
+  const colors = [ 'Black', 'Gray', 'White', 'Beige', 'Red' , 'Orange', 'Yellow', 'Brown', 'Green', 'Blue', 'Purple', 'Magenta', 'Pink' ];
 
   let type = '',
-      color = '',
+      colorMatches = [],
       pattern = false;
-
   const labels = imageDetails.labelAnnotations;
-  for (let i = 0; i < Object.keys( keywords ).length; i++ ){
-    let key = Object.keys( keywords )[i];
-    let keywordsArr = keywords[ key ];
-    for ( let j = 0; j < labels.length; j++ ){
-      let term = labels[ j ].description.toLowerCase();
-      if ( term[ term.length -1 ] === 's') term = term.slice(0,-1);
-      if ( term === 'jean' || term === 'denim') color = 'Denim';
-      if ( colors.includes( term ) && !color ) color = term;
-      if ( term === 'pattern' && !pattern ) pattern = true;
-      if ( keywordsArr.includes( term ) ){
-        type = key;
-        break;
-      }
-      let regex = new RegExp( `\w*\s*${term}[s]*\s*`, 'i' );
-      for ( let k = 0; k < keywordsArr.length; k++ ){
-        if ( regex.test( keywordsArr[ k ] ) ){
-          type = key;
+
+  for ( let i = 0; i < labels.length; i++ ){
+    let label = labels[ i ].description;
+    if ( label === 'Denim' && !colorMatches.length ) colorMatches.push( 'Denim' );
+    if ( label === 'Pattern' && !pattern && labels[ i ].score > 0.5) pattern = true;
+    if ( colors.includes( label ) && !colorMatches.length && !pattern ) colorMatches.push( label );
+    if ( !type || label === 'Sleeveless shirt' ){
+      for ( const cat in keywords ){
+        let keywordsArr = keywords[ cat ];
+        if (keywordsArr.includes( label )) {
+          type = cat;
           break;
+        } else {
+          let regex = new RegExp( `\w*\s*${label}[s]*\s*`, 'i' );
+          let match = keywordsArr.some( keyword => regex.test( keyword ));
+          if ( match ) {
+            type = cat;
+            break;
+          }
         }
       }
-      if ( type ) break;
     }
-
-    if ( type ) break;
   }
 
-  if ( !color ){
+  if ( !colorMatches.length ){
     const { colors } = imageDetails.imagePropertiesAnnotation.dominantColors;
-    color = convertColor( colors[0] );
+    colorMatches.push(convertColor( colors[0] ));
   }
+  if ( pattern ) colorMatches.push( ', Patterned' );
 
-  return { Type: type, Color: color }
+  return { Type: type, Color: colorMatches }
 }
 
 const convertColor = color => {

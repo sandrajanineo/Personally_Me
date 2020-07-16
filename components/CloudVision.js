@@ -7,11 +7,18 @@ export default CloudVision = props => {
 
   return (
     <View style={ styles.container }>
-      <Text style={ styles.text }>Our fashion experts suggest that you are adding</Text>
-      { imageDetails.Type === 'Bottoms' ?
-        <Text style={ styles.highlight }>{ imageDetails.Color } { imageDetails.Type }</Text>
-        : <Text style={ styles.highlight }>a { imageDetails.Color } { imageDetails.Type }</Text>
-      }
+      <View>
+        <Text style={ styles.text }>Our fashion experts suggest that you are adding
+          { imageDetails.Type === 'Bottoms' ?
+            <Text style={ styles.noDisplay }></Text>
+            : <Text > a</Text>
+          }
+        </Text>
+      </View>
+      <View style={ styles.flex }>
+      { imageDetails.Color.map( (color, i) => <Text key={ i.toString() } style={ styles.highlight }>{color}</Text>)}
+      <Text style={ styles.highlight }> {imageDetails.Type}</Text>
+      </View>
       <Text style={ styles.smallText }>** Choose to Edit Details if you desire to add additional meta data</Text>
       <View style={ styles.flex }>
         <TouchableOpacity
@@ -42,6 +49,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontSize: 15,
+    marginTop: 10,
   },
   smallText: {
     textAlign: 'center',
@@ -74,5 +82,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  noDisplay: {
+    display: 'none'
   },
 })
