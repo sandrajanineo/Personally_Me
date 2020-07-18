@@ -44,6 +44,11 @@ export default function globalContext (){
             ...prevState,
             closet: action.items,
           }
+        case 'FETCH_COLLECTION_TYPES':
+          return {
+            ...prevState,
+            types: action.types
+          }
         case 'APPLY_FILTERS':
           return {
             ...prevState,
@@ -110,6 +115,7 @@ export default function globalContext (){
       imageDetails: {},
       displayGoogle: false,
       collection: null,
+      types: [],
     }
   );
 
@@ -167,6 +173,19 @@ export default function globalContext (){
       filterCollection: ( filters ) => {
         if ( !Object.keys(filters).length ) return;
         dispatch({ type: 'APPLY_FILTERS', filters })
+      },
+
+      fetchCollectionTypes: userID => {
+        Firebase.firestore().collection(userID)
+        .onSnapshot( querySnapshot => {
+          let types = [];
+          querySnapshot.forEach( doc => {
+            types.push( doc.data() )
+          })
+          dispatch({ type: 'FETCH_COLLECTION_TYPES', types });
+        },
+          error => console.log('error: ', error)
+        )
       },
 
       analyzeImage: async image => {
