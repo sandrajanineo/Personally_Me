@@ -415,7 +415,7 @@ const analyzeGoogle = imageDetails => {
     const { colors } = imageDetails.imagePropertiesAnnotation.dominantColors;
     colorMatches.push(convertColor( colors[0] ));
   }
-  if ( pattern ) colorMatches.push( ', Patterned' );
+  if ( pattern ) colorMatches.push( 'Patterned' );
 
   return { Type: type, Color: colorMatches }
 }

@@ -16,8 +16,10 @@ export default CloudVision = props => {
         </Text>
       </View>
       <View style={ styles.flex }>
-      { imageDetails.Color.map( (color, i) => <Text key={ i.toString() } style={ styles.highlight }>{color}</Text>)}
-      <Text style={ styles.highlight }> {imageDetails.Type}</Text>
+        <Text style={ styles.highlight }>
+          {imageDetails.Color.length > 1 ? imageDetails.Color.join(', ') : imageDetails.Color}
+        </Text>
+        <Text style={ styles.highlight }> {imageDetails.Type}</Text>
       </View>
       <Text style={ styles.smallText }>** Choose to Edit Details if you desire to add additional meta data</Text>
       <View style={ styles.flex }>
