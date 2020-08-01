@@ -6,6 +6,8 @@ import {
   Text,
   View,
   Alert,
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 
 import { GlobalContext } from '../hooks/global';
@@ -13,12 +15,16 @@ import PickImage from '../components/PickImage';
 import CloudVision from '../components/CloudVision';
 import Loading from '../components/Loading';
 import Edit from '../components/Edit';
+import AddMultiple from '../components/AddMultiple';
 
 export default AddItem = props => {
   let { success, error, resetState, displayGoogle, collection, imageDetails } = React.useContext( GlobalContext );
   let [ loading, setLoading ] = React.useState( false );
   let [ edit, setEdit ] = React.useState( false );
   let [ locationY, setLocationY ] = React.useState( null );
+  let [ addMulti, setAddMulti ] = React.useState( false );
+  let [ addLocationY, setAddLocationY ] = React.useState( null );
+  const { width, height } = Dimensions.get('window');
 
   React.useEffect(() => {
     if ( loading ) {
@@ -43,6 +49,14 @@ export default AddItem = props => {
         <Text style={ styles.headerText }>Add To Your Collection!</Text>
 
         { !displayGoogle && <PickImage setLoading={ setLoading } setLocationY={ setLocationY } /> }
+
+        <TouchableOpacity onPress={ e => {
+          setAddLocationY( e.nativeEvent.locationY + 50.5 )
+          setAddMulti( true )
+        }}>
+          <Text>Add Multiple Items</Text>
+        </TouchableOpacity>
+        { addMulti && <AddMultiple dimensions={ { width, height } } locationY={ addLocationY } setAddMulti={ setAddMulti } /> }
 
         { imageDetails.imageURL && displayGoogle && (
           <Image source={{ uri: imageDetails.imageURL }} style={ styles.image } />

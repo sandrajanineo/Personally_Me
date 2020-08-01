@@ -36,7 +36,7 @@ export default function PickImage ( props ) {
 
     if (!result.cancelled) {
       props.setLoading( true );
-      analyzeImage( result.uri );
+      analyzeImage( result.uri, false );
     }
   }
 

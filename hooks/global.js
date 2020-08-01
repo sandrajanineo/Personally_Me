@@ -62,10 +62,11 @@ export default function globalContext (){
             outfitReady: true
           }
         case 'IMAGE_ANALYZED':
+          let keyUpated = action.imageDetails.bulk ? 'bulkUpload' : 'displayGoogle';
           return {
             ...prevState,
             imageDetails: action.imageDetails,
-            displayGoogle: true,
+            [ keyUpated ]: true
           }
         case 'ITEM_ADDED':
           let outcome = action.outcome.error ? 'error' : 'success';
@@ -114,6 +115,7 @@ export default function globalContext (){
       filterActive: null,
       imageDetails: {},
       displayGoogle: false,
+      bulkUpload: false,
       collection: null,
       types: [],
     }
@@ -188,13 +190,26 @@ export default function globalContext (){
         )
       },
 
-      analyzeImage: async image => {
+      analyzeImage: async ( image, bulk ) => {
         let date = new Date();
-        let imageName = "img" + Math.random().toString(36).slice(2) + date.getHours().toString(36);
-        let imageURL = await createImageBLOB(image, imageName);
-        let imageDetails = await submitToGoogle( imageURL );
-        imageDetails.imageURL = imageURL;
-        imageDetails.imageName = imageName;
+        let imageDetails = {},
+            imagesUploaded = [];
+        if ( !bulk ) {
+          let imageName = "img" + Math.random().toString(36).slice(2) + date.getHours().toString(36);
+          let imageURL = await createImageBLOB( image, imageName );
+          imageDetails = await submitToGoogle( imageURL );
+          imageDetails.imageURL = imageURL;
+          imageDetails.imageName = imageName;
+        } else {
+          for ( let i = 0; i < image.imagesUploaded.length; i++ ){
+            let imageName = "img" + Math.random().toString(36).slice(2) + date.getHours().toString(36);
+            let imageURL = await createImageBLOB( image.imagesUploaded[i], imageName );
+            imagesUploaded.push({ imageName, imageURL, Type: image.type });
+          }
+          imageDetails.imageURL = imagesUploaded;
+          imageDetails.Type = image.type;
+          imageDetails.bulk = true;
+        }
         dispatch({ type: 'IMAGE_ANALYZED',  imageDetails });
       },
 
@@ -203,8 +218,15 @@ export default function globalContext (){
         Firebase.firestore()
         .collection(userID).doc(details.Type).set({ Type: details.Type })
         .then( () => {
-          let docRef = Firebase.firestore().collection(userID).doc(details.Type)
-          docRef.collection(details.Type).doc(details.imageName).set(details);
+          let collectionRef = Firebase.firestore().collection(userID).doc(details.Type).collection(details.Type)
+          if ( details.bulk ){
+            for ( let i = 0; i < details.imageURL.length; i++ ){
+              let image = details.imageURL[i];
+              collectionRef.doc(image.imageName).set(image)
+            }
+          } else {
+            collectionRef.doc(details.imageName).set(details);
+          }
           outcome = { success: 1, collection: details.Type }
           dispatch({ type: 'ITEM_ADDED', outcome });
         })
@@ -301,7 +323,7 @@ const outfitGenerator = ( items, categories ) => {
   return outfit;
 }
 
-const createImageBLOB = async (uri, name) => {
+const createImageBLOB = async ( uri, name ) => {
     const blob = await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = function() {
