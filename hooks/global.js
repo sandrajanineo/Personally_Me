@@ -168,7 +168,7 @@ export default function globalContext (){
           })
           dispatch({ type: 'FETCH_COLLECTION', items });
         },
-          error => console.log('error: ', error)
+          error => console.log('error in fetchCollection: ', error)
         );
       },
 

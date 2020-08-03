@@ -20,6 +20,9 @@ export default function useCachedResources() {
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         });
 
+        // needed for debug purposes
+        // AsyncStorage.clear();
+
         const userID = await AsyncStorage.getItem('userID');
         if ( userID ) setSession(true);
 
