@@ -3,16 +3,18 @@ import { WebView } from 'react-native-webview';
 import { View, Modal, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { GlobalContext } from '../hooks/global';
 import TabBarIcon from './TabBarIcon';
+import Loading from './Loading';
 
 export default AddMultiple = props => {
-  let { analyzeImage, bulkUpload, addItem, userID, imageDetails } = React.useContext( GlobalContext );
+  let { analyzeImage, bulkUpload, addItem, userID, imageDetails, success } = React.useContext( GlobalContext );
   let [ webViewRef, setRef ] = React.useState( null );
   let { width, height } = props.dimensions;
   const [ modalVisible, setModalVisible ] = React.useState( true );
 
   React.useEffect(() => {
-    if ( bulkUpload ){
+    if ( bulkUpload ) {
       addItem( userID, imageDetails );
+      setModalVisible( false );
     }
 
   }, [ bulkUpload ]);
@@ -21,6 +23,7 @@ export default AddMultiple = props => {
     <View>
       <Modal visible={ modalVisible } transparent={ true }>
         <View style={[ styles.modal, { top: props.locationY } ]}>
+          { props.loading && <Loading locationY={ width/2 } /> }
           <TouchableOpacity
             style={styles.closeModal}
             onPress={() => setModalVisible( false )}
@@ -38,6 +41,7 @@ export default AddMultiple = props => {
             javaScriptEnabled={true}
             onMessage={ event => {
               const data = JSON.parse(event.nativeEvent.data);
+              props.setLoading( true );
               analyzeImage( data, true )
             }}
           />

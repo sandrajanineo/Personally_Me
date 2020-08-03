@@ -37,7 +37,10 @@ export default Collection = props => {
       <View style={styles.topContainer} >
         <TouchableOpacity
           style={styles.button}
-          onPress={() => props.navigation.navigate('Add Item')}
+          onPress={() => {
+            state.resetState( 'success' );
+            props.navigation.navigate( 'Add Item' );
+          }}
         >
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>

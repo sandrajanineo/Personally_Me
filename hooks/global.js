@@ -84,7 +84,7 @@ export default function globalContext (){
             val = {};
             filter = null;
           }
-          else if ( key === 'displayGoogle' ){
+          else if ( key === 'displayGoogle' || key === 'bulkUpload' ){
             val = false;
             filter = null;
           }

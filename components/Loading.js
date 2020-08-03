@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 999
   },
   activityLoader: {
     backgroundColor: '#E8E8E8',

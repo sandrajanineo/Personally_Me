@@ -52,11 +52,19 @@ export default AddItem = props => {
 
         <TouchableOpacity onPress={ e => {
           setAddLocationY( e.nativeEvent.locationY + 50.5 )
-          setAddMulti( true )
+          resetState( 'bulkUpload' );
+          setAddMulti( true );
         }}>
           <Text>Add Multiple Items</Text>
         </TouchableOpacity>
-        { addMulti && <AddMultiple dimensions={ { width, height } } locationY={ addLocationY } setAddMulti={ setAddMulti } /> }
+        { addMulti &&
+          <AddMultiple
+            dimensions={ { width, height } }
+            locationY={ addLocationY }
+            setAddMulti={ setAddMulti }
+            setLoading={ setLoading }
+            loading={ loading }
+          /> }
 
         { imageDetails.imageURL && displayGoogle && (
           <Image source={{ uri: imageDetails.imageURL }} style={ styles.image } />
