@@ -2,6 +2,7 @@ import * as React from 'react';
 import Firebase from '../dbConfig';
 import AsyncStorage from '@react-native-community/async-storage';
 import config from '../cloudAPIConfig';
+import * as FileSystem from 'expo-file-system';
 
 export const GlobalContext = React.createContext();
 
@@ -146,10 +147,27 @@ export default function globalContext (){
       fetchSession: async () => {
         try {
           const userID = await AsyncStorage.getItem('userID');
+          if ( userID ){
+            syncLocalImages(userID)
+          }
           dispatch({ type: 'SESSION_ACTIVE', userID: userID });
         } catch (err) {
           console.log('error fetching session');
         }
+      },
+
+      syncLocalImages: userID => {
+        return async function( userID ) {
+          let types = await fetchCollectionTypes(userID)
+          let items = [];
+          for (let i = 0; i < types.length; i++){
+            let collection = await fetchFirebaseItems(userID, types[i]);
+            items.push(...collection);
+          }
+          // console.log('items!! ', items.length);
+          let outcome = await syncLocalSystem( items );
+          // console.log('outcome: ', outcome)
+        } (userID)
       },
 
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
@@ -166,7 +184,20 @@ export default function globalContext (){
           querySnapshot.forEach( doc => {
             items.push( doc.data() )
           })
-          dispatch({ type: 'FETCH_COLLECTION', items });
+          for ( let i = 0; i < items.length; i++){
+            let imageURL = items[i].imageURL;
+            let localFile = FileSystem.documentDirectory + items[i].imageName + '.jpeg';
+            FileSystem.getInfoAsync(localFile, { md5: false, size: true })
+            .then( result => {
+              if ( !result.exists ) {
+                console.log(result)
+                items[i].notLocal = 1;
+              }
+              if ( i === items.length-1 ){
+                dispatch({ type: 'FETCH_COLLECTION', items });
+              }
+            })
+          }
         },
           error => console.log('error in fetchCollection: ', error)
         );
@@ -218,17 +249,22 @@ export default function globalContext (){
         Firebase.firestore()
         .collection(userID).doc(details.Type).set({ Type: details.Type })
         .then( () => {
-          let collectionRef = Firebase.firestore().collection(userID).doc(details.Type).collection(details.Type)
+          let collectionRef = Firebase.firestore().collection(userID).doc(details.Type).collection(details.Type);
+          let items = [];
           if ( details.bulk ){
             for ( let i = 0; i < details.imageURL.length; i++ ){
               let image = details.imageURL[i];
               collectionRef.doc(image.imageName).set(image)
+              items.push(image)
             }
           } else {
             collectionRef.doc(details.imageName).set(details);
+            items.push(details)
           }
-          outcome = { success: 1, collection: details.Type }
-          dispatch({ type: 'ITEM_ADDED', outcome });
+          syncLocalSystem(items).then( () => {
+            outcome = { success: 1, collection: details.Type }
+            dispatch({ type: 'ITEM_ADDED', outcome });
+          })
         })
         .catch( () => {
           outcome = { error: 1, collection: null };
@@ -355,6 +391,53 @@ const storeUser = async (userID) => {
   }
 }
 
+const syncLocalImages = userID => {
+  return async function( userID ) {
+    let types = await fetchCollectionTypes(userID)
+    let items = [];
+    for (let i = 0; i < types.length; i++){
+      let collection = await fetchFirebaseItems(userID, types[i]);
+      items.push(...collection);
+    }
+
+    await syncLocalSystem( items );
+  } (userID)
+}
+
+const fetchCollectionTypes = userID => {
+    const db = Firebase.firestore();
+    return db.collection(userID).get()
+    .then( querySnapshot => {
+      let types = []
+      querySnapshot.forEach( doc => types.push( doc.data().Type ));
+
+      return types;
+    })
+}
+
+const fetchFirebaseItems = ( userID, type ) => {
+  const db = Firebase.firestore();
+    return db.collection(userID).doc(type).collection(type).get()
+    .then( querySnapshot => {
+      let items = []
+      querySnapshot.forEach( doc => items.push(doc.data()));
+
+      return items;
+    })
+}
+
+const syncLocalSystem = async items => {
+  for ( let i = 0; i < items.length; i++ ){
+    let imageURL = items[i].imageURL;
+    let localFile = FileSystem.documentDirectory + items[i].imageName + '.jpeg';
+    let fileExists = await FileSystem.getInfoAsync(localFile, { md5: false, size: true })
+    if ( !fileExists.exists ) {
+      let outcome = await FileSystem.downloadAsync(imageURL, localFile)
+    }
+  }
+
+  return 1;
+}
 
 const submitToGoogle = async ( imageURL ) => {
   try {

@@ -77,7 +77,7 @@ export default Collection = props => {
           {state.closet.map((item, i) => {
             return (
               <View style={styles.imageContainer} key={i} >
-                <Image source={{ uri: item.imageURL }} style={styles.image} />
+                <Image source={{ uri: item.notLocal ? item.imageURL : FileSystem.documentDirectory + item.imageName + '.jpeg' }} style={styles.image} />
                 <View style={styles.iconContainer}>
                   <TouchableOpacity onPress={() => removeItem( item )} >
                     <TabBarIcon name="md-trash" style={styles.icon} size={40} />

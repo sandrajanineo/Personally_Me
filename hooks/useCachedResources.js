@@ -3,6 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as FileSystem from 'expo-file-system';
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -13,6 +14,8 @@ export default function useCachedResources() {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHideAsync();
+
+        // console.log('FileSystem.documentDirectory: ', FileSystem.documentDirectory)
 
         // Load fonts
         await Font.loadAsync({
