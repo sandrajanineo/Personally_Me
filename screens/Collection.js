@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, TouchableOpacity, View, Image, Text, Alert } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
 import TabBarIcon from '../components/TabBarIcon';
 import Filters from '../components/Filters';
