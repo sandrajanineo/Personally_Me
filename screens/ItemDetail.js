@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Text, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
 import { GlobalContext } from '../hooks/global';
 import Form from '../components/Form';
@@ -40,7 +41,7 @@ const ItemDetail = props => {
   return (
     <View style={ styles.container }>
       <ScrollView>
-        <Image source={{ uri: item.imageURL }} style={ styles.image } />
+        <Image source={{ uri: FileSystem.documentDirectory + item.imageName + '.jpeg' }} style={ styles.image } />
         <Edit updateState={ updateState } updatedFields={ updatedFields } setLoading={ setLoading } disableType={ true } />
         { loading && <Loading /> }
       </ScrollView>
