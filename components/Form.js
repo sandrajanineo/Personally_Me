@@ -21,7 +21,7 @@ const Form = (props) => {
     label: "Select the Occassion ",
     options: [ { category: 'Occassion', value: 'Business' }, { category: 'Occassion', value: 'Casual' }, { category: 'Occassion', value: 'Night Out' },
               { category: 'Occassion', value: 'Sporty' } ],
-    selected: details.Occassion,
+    selected: details.Occassion || '',
     category: 'Occassion'
   },
   {
@@ -29,7 +29,7 @@ const Form = (props) => {
     label: "Select the Season ",
     options: [ { category: 'Season', value: 'Fall' }, { category: 'Season', value: 'Spring' }, { category: 'Season', value: 'Summer' },
               { category: 'Season', value: 'Winter' } ],
-    selected: details.Season,
+    selected: details.Season || '',
     category: 'Season'
   },
   {
@@ -39,16 +39,15 @@ const Form = (props) => {
               { category: 'Color', value: 'Orange' }, { category: 'Color', value: 'Pink' }, { category: 'Color', value: 'Red' },
               { category: 'Color', value: 'Violet' }, { category: 'Color', value: 'White' }, { category: 'Color', value: 'Yellow' },
               { category: 'Color', value: 'Denim' }, { category: 'Color', value: 'Patterned' } ],
-    selected: details.Color,
+    selected: details.Color || '',
     category: 'Color'
   }, {
     key: 4,
     label: "Select the Location",
     options: [ { category: 'Location', value: 'Closet' }, { category: 'Location', value: 'Under Bed' } ],
-    selected: details.Location,
+    selected: details.Location || '',
     disable: screen === 'OutfitGeneratorForm' ? true : false,
     altLabel: '',
-    selected: details.Location,
     category: 'Location'
   }];
   
