@@ -483,7 +483,8 @@ const analyzeGoogle = imageDetails => {
   const keywords = {
     Top: [ "Blouse", "Cardigan", "Collar", "Hood", "Hoodie", "Jacket", "Jersey", "Shirt", "Sleeveless Shirt", "Sweater", "Sweatshirt", "T-shirt", "Top" ],
     Bottoms: [ "Leggings", "Pants", "Shorts", "Skort", "Sweatpants", "Trousers" ],
-    "One Piece": [ "Dress", "Jumpsuit", "Overall", "Romper", "Gown" ]
+    "One Piece": [ "Dress", "Jumpsuit", "Overall", "Romper", "Gown" ],
+    Shoes: [ "Shoe", "Footwear", "Sneakers" ],
   };
 
   const colors = [ 'Black', 'Gray', 'White', 'Beige', 'Red' , 'Orange', 'Yellow', 'Brown', 'Green', 'Blue', 'Purple', 'Magenta', 'Pink' ];

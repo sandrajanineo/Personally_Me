@@ -11,7 +11,8 @@ const Form = (props) => {
     options: screen === 'OutfitGeneratorForm' ?
       [ { category: 'Type', value: 'One Piece' }, { category: 'Type', value: 'Two Piece' } ] 
       :
-      [ { category: 'Type', value: 'Bottoms' }, { category: 'Type', value: 'One Piece' }, { category: 'Type', value: 'Top' } ],
+      [ { category: 'Type', value: 'Bottoms' }, { category: 'Type', value: 'One Piece' }, { category: 'Type', value: 'Top' },
+      { category: 'Type', value: 'Shoes' } ],
     selected: details.Type || type,
     disable: disableType,
     altLabel: `Type: ${details.Type || type}`,
