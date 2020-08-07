@@ -17,7 +17,7 @@ export default function Edit ( props ) {
         let colors = details.Color.filter ( color => color !== val );
         val = colors;
       } else {
-        let colors = details.Color;
+        let colors = details.Color || [];
         let match = colors.filter( color => val === color );
         if ( !match.length ) colors.push( val );
         val = colors;
